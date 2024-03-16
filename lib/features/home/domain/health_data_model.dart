@@ -1,0 +1,119 @@
+import 'package:equatable/equatable.dart';
+
+class HealthModel extends Equatable {
+  // final String id;
+  final double weight;
+  final double height;
+  final double headCircumference;
+  final DateTime dateTime;
+
+  HealthModel({
+    // required this.id,
+    required this.weight,
+    required this.height,
+    required this.headCircumference,
+    DateTime? dateTime, // Use DateTime? to allow nullable values
+  }) : dateTime = dateTime ?? DateTime.now(); // Use the null-aware coalescing operator to provide a default value
+
+  @override
+  List<Object?> get props => [weight, height, headCircumference, dateTime];
+}
+
+class LineData extends Equatable {
+  final double sideValue;
+  final DateTime date;
+
+
+  LineData({
+      required this.sideValue,
+      required this.date
+  });
+
+  @override
+  List<Object?> get props => [sideValue, date];
+}
+//
+//   factory HealthModel.fromJson(String id, Map<String, dynamic> json) =>
+//       HealthModel(
+//         id: id,
+//         weight: json['weight'].toDouble(),
+//         height: json['height'].toDouble(),
+//         headCircumference: json['headCircumference'].toDouble(),
+//       );
+//
+//   Map<String, dynamic> toJson() => {
+//     'id': id,
+//     'weight': weight,
+//     'height': height,
+//     'headCircumference': headCircumference,
+//   };
+//
+//   @override
+//   List<Object?> get props => [id, weight, height, headCircumference];
+// }
+//
+class HealthRealModel extends Equatable {
+  final String weight;
+  final String height;
+  final String headCircumference;
+
+  HealthRealModel({
+    this.weight = "",
+    this.height = "",
+    this.headCircumference = "",
+});
+
+  @override
+  List<Object?> get props => [weight, height, headCircumference];
+}
+// class HealthSaveRemoteModel extends Equatable {
+//   final String id;
+//   final String weight;
+//   final String height;
+//   final String headCircumference;
+//   final DateTime datetime;
+//
+//   HealthSaveRemoteModel({
+//     this.id = "",
+//     this.weight = "",
+//     this.height = "",
+//     this.headCircumference = "",
+//     DateTime? datetime,
+// }) : datetime = datetime ?? DateTime.now();
+//
+//   @override
+//   List<Object?> get props => [id, weight, height, headCircumference];
+// }
+
+// class HealthRealtimeModel extends Equatable {
+//   // final String id;
+//   final double weight;
+//   final double height;
+//   final double headCircumference;
+//
+//
+//   HealthRealtimeModel({
+//     // required this.id,
+//     this.weight = 0.0,
+//     this.height = 0.0,
+//     this.headCircumference = 0.0,
+//   });
+//
+//   factory HealthRealtimeModel.fromJson(String id, Map<String, dynamic> json) =>
+//       HealthRealtimeModel(
+//         // id: id,
+//         weight: json['weight'].toDouble(),
+//         height: json['height'].toDouble(),
+//         headCircumference: json['headCircumference'].toDouble(),
+//       );
+//
+//   Map<String, dynamic> toJson() => {
+//     // 'id': id,
+//     'weight': weight,
+//     'height': height,
+//     'headCircumference': headCircumference,
+//   };
+//
+//   @override
+//   List<Object?> get props => [ weight, height, headCircumference];
+// }
