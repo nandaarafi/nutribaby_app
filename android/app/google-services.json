@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "833519327871",
+    "project_id": "nutrition-app-4fe95",
+    "storage_bucket": "nutrition-app-4fe95.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:833519327871:android:1f5effea7b6fecc6657d4a",
+        "android_client_info": {
+          "package_name": "com.example.nutribaby_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAD23q49Jp-9alJSrpMpRKT486APpO917c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
