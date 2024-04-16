@@ -23,7 +23,6 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 
-
 class FCategoryTab extends StatefulWidget {
   final List<LineData> dataList;
   final String unit;
@@ -46,9 +45,6 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
   // String? get restorationId => widget.restorationId;
   final TextEditingController _dateController = TextEditingController();
 
-
-
-
   // }
   String _selectedDate = '';
   String _dateCount = '';
@@ -60,9 +56,8 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
     String formattedStartDate = _startDate != null
         ? DateFormat('dd MMM, yyyy').format(_startDate!)
         : '';
-    String formattedEndDate = _endDate != null
-        ? DateFormat('dd MMM, yyyy').format(_endDate!)
-        : '';
+    String formattedEndDate =
+        _endDate != null ? DateFormat('dd MMM, yyyy').format(_endDate!) : '';
 
     _dateController.text = "$formattedStartDate - $formattedEndDate";
     Navigator.of(context).pop();
@@ -73,18 +68,16 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
       if (args.value is PickerDateRange) {
         _startDate = args.value.startDate;
         _endDate = args.value.endDate ?? args.value.startDate;
-        String formattedStartDate = DateFormat('dd MMM, yyyy').format(
-            args.value.startDate);
+        String formattedStartDate =
+            DateFormat('dd MMM, yyyy').format(args.value.startDate);
         String formattedEndDate = args.value.endDate != null
             ? DateFormat('dd MMM, yyyy').format(args.value.endDate!)
             : '';
         _dateController.text = "$formattedStartDate - $formattedEndDate";
         _range = '${DateFormat('dd/MM/yyyy').format(args.value.startDate)} -'
-        // ignore: lines_longer_than_80_chars
-            ' ${DateFormat('dd/MM/yyyy').format(
-            args.value.endDate ?? args.value.startDate)}';
+            // ignore: lines_longer_than_80_chars
+            ' ${DateFormat('dd/MM/yyyy').format(args.value.endDate ?? args.value.startDate)}';
         // _range = _dateController.text;
-
       } else if (args.value is DateTime) {
         _selectedDate = args.value.toString();
       } else if (args.value is List<DateTime>) {
@@ -97,8 +90,6 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
 
   List<String> list = <String>['weeks', 'month'];
   String selectedValue = 'weeks';
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -149,14 +140,19 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                                     child: Column(
                                       children: [
                                         SfDateRangePicker(
-                                          onSelectionChanged: _onSelectionChanged,
-                                          selectionMode: DateRangePickerSelectionMode.range,
+                                          onSelectionChanged:
+                                              _onSelectionChanged,
+                                          selectionMode:
+                                              DateRangePickerSelectionMode
+                                                  .range,
                                           selectionColor: Colors.black,
-                                          minDate: DateTime.now().subtract(Duration(days: 365)),
+                                          minDate: DateTime.now()
+                                              .subtract(Duration(days: 365)),
                                           maxDate: DateTime.now(),
                                         ),
                                         TextButton(
-                                          onPressed: _applyDateRangeAndCloseModal,
+                                          onPressed:
+                                              _applyDateRangeAndCloseModal,
                                           child: Text('OK'),
                                         ),
                                       ],
@@ -181,38 +177,39 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                         if (_startDate == null || _endDate == null) {
                           showDialog(
                             context: context,
-                            builder: (context) =>
-                                AlertDialog(
-                                  title: Text("Error"),
-                                  content: Text("Date Range is Empty"),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text("OK"),
-                                    ),
-                                  ],
+                            builder: (context) => AlertDialog(
+                              title: Text("Error"),
+                              content: Text("Date Range is Empty"),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("OK"),
                                 ),
+                              ],
+                            ),
                           );
                         } else {
-
                           ChartDataProvider provider =
-                          Provider.of<ChartDataProvider>(context, listen: false);
+                              Provider.of<ChartDataProvider>(context,
+                                  listen: false);
 
                           provider.setShowingChart(false);
                           provider.setLoadingState(false);
 
                           try {
-                            await context.read<HealthChartDataCubit>().fetchNewHealthData(_startDate!, _endDate!);
+                            await context
+                                .read<HealthChartDataCubit>()
+                                .fetchNewHealthData(_startDate!, _endDate!);
                             // if (provider.emptyError) {
                             //  print("Empty List");
                             //   // Setting states after successful fetch
                             // }else{
-                              provider.setLoadingState(true);
-                              provider.setShowingChart(true);
-                              provider.setFetchInitial(false);
-                              widget.dataList.clear();
+                            provider.setLoadingState(true);
+                            provider.setShowingChart(true);
+                            provider.setFetchInitial(false);
+                            widget.dataList.clear();
 
                             // }
                           } catch (error) {
@@ -226,15 +223,10 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                             // );
                           }
 
-
-
-
                           // Initiating data fetch operation
-
                         }
                       },
                       child: Container(
-
                         margin: const EdgeInsets.only(top: 10),
                         height: 60,
                         width: 70,
@@ -244,13 +236,15 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                         ),
                         decoration: BoxDecoration(
                           color: Color(0xff503F95),
-                          border: Border.all(color: NColors.primary ),
+                          border: Border.all(color: NColors.primary),
                           borderRadius: BorderRadius.circular(17),
                         ),
                         // color: Colors.black,
-                        child: Center(child: Text("Cari",
-                          style: TextStyle(color: Colors.white),
-                        ),
+                        child: Center(
+                          child: Text(
+                            "Cari",
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
                       ),
                     ),
@@ -261,18 +255,19 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                 builder: (context, provider, _) => Container(
                   height: NHelperFunctions.screenHeight(context) * 0.23,
                   width: double.infinity,
-                  child:provider.LoadingState ?
-                  CustomLineChart2(
-                    dataList: widget.dataList,
-                    xViewInterval: "",
-                    // selectedValue: provider.selectedValue,
-                  ) : Center(
-                    child: Container(
-                      height: 50,
-                      width: 50,
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
+                  child: provider.LoadingState
+                      ? CustomLineChart2(
+                          dataList: widget.dataList,
+                          xViewInterval: "",
+                          // selectedValue: provider.selectedValue,
+                        )
+                      : Center(
+                          child: Container(
+                            height: 50,
+                            width: 50,
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
                 ),
               ),
               SizedBox(height: 10),
@@ -301,12 +296,17 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                             // color: Colors.white
                             ),
                         child: Padding(
-                          padding:  EdgeInsets.symmetric(horizontal: NHelperFunctions.screenWidth(context) * 0.03),
+                          padding: EdgeInsets.symmetric(
+                              horizontal:
+                                  NHelperFunctions.screenWidth(context) * 0.09),
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
-                                height: NHelperFunctions.screenHeight(context) * 0.07,
-                                width: NHelperFunctions.screenWidth(context) * 0.14,
+                                height: NHelperFunctions.screenHeight(context) *
+                                    0.07,
+                                width: NHelperFunctions.screenWidth(context) *
+                                    0.14,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(50),
                                     color: Color(0xff36CBD8)),
@@ -315,9 +315,10 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      widget.dataList.isNotEmpty ?
-                                      (widget.dataList.length - 1).toString() :
-                                      '0',
+                                      widget.dataList.isNotEmpty
+                                          ? (widget.dataList.length - 1)
+                                              .toString()
+                                          : '0',
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 23,
@@ -341,10 +342,11 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                                             DefaultTextStyle.of(context).style,
                                         children: <TextSpan>[
                                           TextSpan(
-                                            text: widget.dataList.isNotEmpty ?
-                                            widget.dataList[widget.dataList.length - 1]
-                                                .sideValue
-                                                .toString() : '0',
+                                            text: widget.dataList.isNotEmpty
+                                                ? widget.dataList[0]
+                                                    .sideValue
+                                                    .toString()
+                                                : '0',
                                             style: TextStyle(
                                                 fontFamily: 'Poppins',
                                                 fontWeight: FontWeight.w600,
@@ -368,15 +370,16 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                                         final UserModel user = state.user;
 
                                         return Text(
-                                          "Age ${agregateBirthdate(user.birthdate)}",
-                                          style: TextStyle(
-                                              fontFamily: 'Poppins',
-                                              fontWeight: FontWeight.w300,
-                                              fontSize: 11,
-                                              color: Colors.white),
-                                      overflow: TextOverflow.ellipsis, // Display '...' when text overflows
-                                      maxLines: 1
-                                        ); // Limit to one line                                        );
+                                            "Age ${agregateBirthdate(user.birthdate)}",
+                                            style: TextStyle(
+                                                fontFamily: 'Poppins',
+                                                fontWeight: FontWeight.w300,
+                                                fontSize: 11,
+                                                color: Colors.white),
+                                            overflow: TextOverflow
+                                                .ellipsis, // Display '...' when text overflows
+                                            maxLines:
+                                                1); // Limit to one line                                        );
                                       } else {
                                         return Text("Error");
                                       }
@@ -399,73 +402,63 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                       ),
                     ),
                     SizedBox(height: 10),
-                    Text("Table Data",
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 20,
-                      color: Color(0xff503f95)
-                    ),),
+                    Text(
+                      "Table Data",
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 20,
+                          color: Color(0xff503f95)),
+                    ),
                     SizedBox(height: 10),
                     Container(
                       height: NHelperFunctions.screenHeight(context) * 0.3,
                       width: NHelperFunctions.screenWidth(context) * 0.9,
                       child: DataTable2(
-                          columnSpacing: 6,
-                          horizontalMargin: 6,
-                          minWidth: 300,
-                          columns: [
-                            DataColumn2(
-                              label: Text(widget.labelTable),
-                              size: ColumnSize.L,
+                        columnSpacing: 6,
+                        horizontalMargin: 6,
+                        minWidth: 300,
+                        columns: [
+                          DataColumn2(
+                            label: Text(widget.labelTable),
+                            size: ColumnSize.M,
+                          ),
+                          DataColumn2(
+                            label: Text('Date'),
+                            size: ColumnSize.M,
+                          ),
+                          DataColumn2(
+                            label: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(''),
                             ),
-                            DataColumn2(
-                              label: Text('Date'),
-                              size: ColumnSize.L,
-                            ),
-                          ],
-                        rows: widget.dataList.map((lineData) => DataRow(
-                          cells: [
-                            DataCell(Text('${lineData.sideValue.toString()} kg')),
-                            DataCell(Text(DateFormat('dd-MM-yyyy').format(lineData.date))),
-                          ],
-                        )).toList(),
+                            size: ColumnSize.S,
+                          ),
+                        ],
+                        rows: widget.dataList
+                            .map((lineData) => DataRow(
+                                  cells: [
+                                    DataCell(Text('${lineData.sideValue.toString()} ${widget.unit}')),
+                                    DataCell(Text(DateFormat('dd-MM-yyyy').format(lineData.date))),
+                                    DataCell(
+                                      Row(
+                                        children: [
+                                          IconButton(
+                                            icon: Icon(Icons.edit),
+                                            onPressed: () {
+                                              _showEditDialog(lineData);
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ))
+                            .toList(),
                       ),
                     ),
                     SizedBox(height: 10),
-                    // Text(
-                    //   "Kesimpulan",
-                    //   textAlign: TextAlign.start,
-                    //   style: TextStyle(
-                    //       fontFamily: 'Poppins',
-                    //       fontWeight: FontWeight.w600,
-                    //       fontSize: 20,
-                    //       color: Color(0xff503F95)),
-                    // ),
-                    // SizedBox(height: 3),
-                    // Text(
-                    //   "Lorem ipsum dolor sit amet, "
-                    //   "consectetur adipiscing elit. Integer "
-                    //   "interdum ante a dignissim facilisis. Nunc "
-                    //   "finibus molestie felis. Duis consectetur "
-                    //   "massa arcu, eu vulputate mauris vehicula "
-                    //   "quis. Curabitur ornare eros vitae libero "
-                    //   "rutrum, sed egestas justo finibus. Fusce "
-                    //   "quis laoreet tortor, id laoreet mi. Nulla molestie, "
-                    //   "sem nec pharetra tincidunt, odio nibh tincidunt libero, "
-                    //   "non ultrices diam justo eu lectus. Quisque viverra, massa "
-                    //   "quis lobortis aliquam, mauris purus cursus elit, id congue "
-                    //   "nisl sapien non magna. Vestibulum ante ipsum primis in "
-                    //   "faucibus orci luctus et ultrices posuere cubilia curae;"
-                    //   " Nam sit amet tortor at nisi aliquet pharetra. Curabitur "
-                    //   "sit amet enim in enim finibus molestie.",
-                    //   style: TextStyle(
-                    //       fontFamily: 'Poppins',
-                    //       fontWeight: FontWeight.w600,
-                    //       fontSize: 12,
-                    //       color: Colors.black.withOpacity(0.6)),
-                    // ),
                     // ElevatedButton(
                     //   onPressed: () async {
                     //     try {
@@ -501,17 +494,72 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
               ),
 
               // child: LineChartSample9()),
-
             ],
           ),
         ),
       ),
     );
   }
+  void _showEditDialog(LineData lineData) {
+    TextEditingController sideValueController =
+    TextEditingController(text: lineData.sideValue.toString());
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: Text('Edit Data'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                // width: 68,
+                child: TextFormField(
+                  controller: sideValueController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                      labelText: widget.labelTable,
+                  suffixText: widget.unit),
+                ),
+              ),
+              SizedBox(height: 20),
+              Text(
+                'Date: ${DateFormat('dd-MM-yyyy').format(lineData.date)}',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                // Update lineData with new values
+                lineData.sideValue = double.parse(sideValueController.text);
+                // Close the dialog
+                Navigator.of(context).pop();
+                //WARNING: No State Management Update, just right on from data source :)
+                await HealthService().updateHealthData(widget.labelTable, lineData);
+                setState(() {
+                });
+                },
+              child: Text('Save'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 }
 
 String agregateBirthdate(DateTime birthDate) {
-
   // DateTime birthDate = DateTime.parse("2022-01-25 11:17:15.446");
   DateTime currentDate = DateTime.now();
   Duration ageDifference = currentDate.difference(birthDate);
@@ -545,3 +593,5 @@ String agregateBirthdate(DateTime birthDate) {
   // }
   return ageString;
 }
+
+

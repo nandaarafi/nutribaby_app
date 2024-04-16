@@ -22,7 +22,7 @@ Future<void> main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => ChartProvider()),
         ChangeNotifierProvider(create: (_) => DateProvider()),
-        ChangeNotifierProvider(create: (_) => PaginationProvider()),
+        // ChangeNotifierProvider(create: (_) => PaginationProvider()),
         ChangeNotifierProvider(create: (_) => ChartDataProvider()),
       ],
       child: const MyApp(),
