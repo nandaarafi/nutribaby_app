@@ -86,9 +86,9 @@ class _ChartScreenState extends State<ChartScreen> {
                           return TabBarView(
                             physics: NeverScrollableScrollPhysics(),
                             children: [
-                              FCategoryTab(dataList: weightDataList, labelTable: "Berat", unit: "kg", restorationId: 'main'),
-                              FCategoryTab(dataList: heightDataList, labelTable: "Tinggi", unit: "cm", restorationId: 'main'),
-                              FCategoryTab(dataList: headCircumferenceDataList, labelTable: "LingkarKepala", unit: "cm", restorationId: 'main'),
+                              FCategoryTab(labelUpdateTable: 'weight',dataList: weightDataList, labelTable: "Berat", unit: "kg", restorationId: 'main'),
+                              FCategoryTab(labelUpdateTable: 'height',dataList: heightDataList, labelTable: "Tinggi", unit: "cm", restorationId: 'main'),
+                              FCategoryTab(labelUpdateTable:'headCircumference',dataList: headCircumferenceDataList, labelTable: "LingkarKepala", unit: "cm", restorationId: 'main'),
                               ConclusionScreen(),
                             ],
                           );
@@ -118,9 +118,9 @@ class _ChartScreenState extends State<ChartScreen> {
                           return TabBarView(
                             physics: NeverScrollableScrollPhysics(),
                             children: [
-                              FCategoryTab(dataList: weightDataList, labelTable: "Berat", unit: "kg", restorationId: 'main'),
-                              FCategoryTab(dataList: heightDataList, labelTable: "Tinggi", unit: "cm", restorationId: 'main'),
-                              FCategoryTab(dataList: headCircumferenceDataList, labelTable: "LingkarKepala", unit: "mm", restorationId: 'main'),
+                              FCategoryTab(labelUpdateTable: 'weight',dataList: weightDataList, labelTable: "Berat", unit: "kg", restorationId: 'main'),
+                              FCategoryTab(labelUpdateTable: 'height',dataList: heightDataList, labelTable: "Tinggi", unit: "cm", restorationId: 'main'),
+                              FCategoryTab(labelUpdateTable:'headCircumference',dataList: headCircumferenceDataList, labelTable: "LingkarKepala", unit: "cm", restorationId: 'main'),
                               ConclusionScreen(),
                             ],
                           );

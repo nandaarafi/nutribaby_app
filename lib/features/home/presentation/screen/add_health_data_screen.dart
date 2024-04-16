@@ -184,7 +184,7 @@ class _AddHealthScreenState extends State<AddHealthScreen> {
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop(); // Dismiss the dialog
-                    AppRouter.router.push(Routes.homeChartPage);
+                    AppRouter.router.go(Routes.homeChartPage);
                   },
                   child: Text("OK"),
                 ),

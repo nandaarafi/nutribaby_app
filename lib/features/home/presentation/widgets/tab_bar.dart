@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -28,10 +30,12 @@ class FCategoryTab extends StatefulWidget {
   final String unit;
   final String labelTable;
   final String? restorationId;
+  final String labelUpdateTable;
 
   FCategoryTab({
     required this.dataList,
     required this.unit,
+    required this.labelUpdateTable,
     required this.labelTable,
     required this.restorationId,
   });
@@ -41,7 +45,16 @@ class FCategoryTab extends StatefulWidget {
 }
 
 class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
+  List<double> testData = [2781, 2667, 2785, 1031, 646, 2340, 2410];
+
   @override
+  void initState() {
+    //TODO: Argument to Kesimpulan
+    double trend = calculateTrend(widget.dataList);
+    print(trend);
+    super.initState();
+  }
+
   // String? get restorationId => widget.restorationId;
   final TextEditingController _dateController = TextEditingController();
 
@@ -93,6 +106,7 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
 
   @override
   Widget build(BuildContext context) {
+    List<LineData> dataListReversed = widget.dataList.reversed.toList();
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -336,33 +350,41 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  RichText(
-                                    text: TextSpan(
-                                        style:
-                                            DefaultTextStyle.of(context).style,
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                            text: widget.dataList.isNotEmpty
-                                                ? widget.dataList[0]
-                                                    .sideValue
-                                                    .toString()
-                                                : '0',
-                                            style: TextStyle(
-                                                fontFamily: 'Poppins',
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 20,
-                                                color: Colors.white),
-                                          ),
-                                          TextSpan(
-                                            // text: " kg",
-                                            text: "${widget.unit ?? 'N/A'}",
-                                            style: TextStyle(
-                                                fontFamily: 'Poppins',
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 20,
-                                                color: Colors.white),
-                                          ),
-                                        ]),
+                                  Consumer<ChartDataProvider>(
+                                    builder: (context, provider, _) {
+                                      List<LineData> dataList =
+                                          provider.fetchInitial
+                                              ? widget.dataList
+                                              : dataListReversed;
+                                      return RichText(
+                                        text: TextSpan(
+                                            style: DefaultTextStyle.of(context)
+                                                .style,
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                text: dataList.isNotEmpty
+                                                    ? dataList[0]
+                                                        .sideValue
+                                                        .toString()
+                                                    : '0',
+                                                style: TextStyle(
+                                                    fontFamily: 'Poppins',
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 20,
+                                                    color: Colors.white),
+                                              ),
+                                              TextSpan(
+                                                // text: " kg",
+                                                text: "${widget.unit ?? 'N/A'}",
+                                                style: TextStyle(
+                                                    fontFamily: 'Poppins',
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 20,
+                                                    color: Colors.white),
+                                              ),
+                                            ]),
+                                      );
+                                    },
                                   ),
                                   BlocBuilder<AuthCubit, AuthState>(
                                     builder: (context, state) {
@@ -415,47 +437,57 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                     Container(
                       height: NHelperFunctions.screenHeight(context) * 0.3,
                       width: NHelperFunctions.screenWidth(context) * 0.9,
-                      child: DataTable2(
-                        columnSpacing: 6,
-                        horizontalMargin: 6,
-                        minWidth: 300,
-                        columns: [
-                          DataColumn2(
-                            label: Text(widget.labelTable),
-                            size: ColumnSize.M,
-                          ),
-                          DataColumn2(
-                            label: Text('Date'),
-                            size: ColumnSize.M,
-                          ),
-                          DataColumn2(
-                            label: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(''),
-                            ),
-                            size: ColumnSize.S,
-                          ),
-                        ],
-                        rows: widget.dataList
-                            .map((lineData) => DataRow(
-                                  cells: [
-                                    DataCell(Text('${lineData.sideValue.toString()} ${widget.unit}')),
-                                    DataCell(Text(DateFormat('dd-MM-yyyy').format(lineData.date))),
-                                    DataCell(
-                                      Row(
-                                        children: [
-                                          IconButton(
-                                            icon: Icon(Icons.edit),
-                                            onPressed: () {
-                                              _showEditDialog(lineData);
-                                            },
+                      child: Consumer<ChartDataProvider>(
+                        builder: (context, provider, _) {
+                          List<LineData> dataList = provider.fetchInitial
+                              ? widget.dataList
+                              : dataListReversed;
+                          return DataTable2(
+                            columnSpacing: 6,
+                            horizontalMargin: 6,
+                            minWidth: 300,
+                            columns: [
+                              DataColumn2(
+                                label: Text(widget.labelTable),
+                                size: ColumnSize.M,
+                              ),
+                              DataColumn2(
+                                label: Text('Date'),
+                                size: ColumnSize.M,
+                              ),
+                              DataColumn2(
+                                label: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(''),
+                                ),
+                                size: ColumnSize.S,
+                              ),
+                            ],
+                            // rows: provider.fetchInitial ? dataListReversed
+                            rows: dataList
+                                .map((lineData) => DataRow(
+                                      cells: [
+                                        DataCell(Text(
+                                            '${lineData.sideValue.toString()} ${widget.unit}')),
+                                        DataCell(Text(DateFormat('dd-MM-yyyy')
+                                            .format(lineData.date))),
+                                        DataCell(
+                                          Row(
+                                            children: [
+                                              IconButton(
+                                                icon: Icon(Icons.edit),
+                                                onPressed: () {
+                                                  _showEditDialog(lineData);
+                                                },
+                                              ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ))
-                            .toList(),
+                                        ),
+                                      ],
+                                    ))
+                                .toList(),
+                          );
+                        },
                       ),
                     ),
                     SizedBox(height: 10),
@@ -500,9 +532,10 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
       ),
     );
   }
+
   void _showEditDialog(LineData lineData) {
     TextEditingController sideValueController =
-    TextEditingController(text: lineData.sideValue.toString());
+        TextEditingController(text: lineData.sideValue.toString());
 
     showDialog(
       context: context,
@@ -520,8 +553,7 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                   controller: sideValueController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                      labelText: widget.labelTable,
-                  suffixText: widget.unit),
+                      labelText: widget.labelTable, suffixText: widget.unit),
                 ),
               ),
               SizedBox(height: 20),
@@ -539,10 +571,10 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                 // Close the dialog
                 Navigator.of(context).pop();
                 //WARNING: No State Management Update, just right on from data source :)
-                await HealthService().updateHealthData(widget.labelTable, lineData);
-                setState(() {
-                });
-                },
+                await HealthService()
+                    .updateHealthData(widget.labelUpdateTable, lineData);
+                setState(() {});
+              },
               child: Text('Save'),
             ),
             TextButton(
@@ -556,7 +588,6 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
       },
     );
   }
-
 }
 
 String agregateBirthdate(DateTime birthDate) {
@@ -594,4 +625,54 @@ String agregateBirthdate(DateTime birthDate) {
   return ageString;
 }
 
+double calculateTrend(List<LineData> dataList) {
+  if (dataList.isEmpty) {
+    return 0;
+  }
 
+  double summedSideValues =
+      dataList.map((data) => data.sideValue).reduce((a, b) => a + b);
+  double multipliedData = 0;
+  int summedIndex = 0;
+  int squaredIndex = 0;
+
+  for (int index = 0; index < dataList.length; index++) {
+    int currentIndex = index + 1; // Adjust index for 1-based counting
+    multipliedData += currentIndex * dataList[index].sideValue;
+    summedIndex += currentIndex;
+    squaredIndex += currentIndex * currentIndex;
+  }
+
+  double numerator =
+      (dataList.length * multipliedData) - (summedSideValues * summedIndex);
+  int denominator =
+      ((dataList.length * squaredIndex) - (summedIndex * summedIndex));
+  denominator.toDouble();
+
+  return denominator != 0 ? numerator / denominator : 0;
+}
+
+double trendValue(List<double> nums) {
+  double summedNums = nums.reduce((a, b) => a + b);
+  double multipliedData = 0;
+  int summedIndex = 0;
+  int squaredIndex = 0;
+
+  for (int index = 0; index < nums.length; index++) {
+    int currentIndex = index + 1; // Adjust index for 1-based counting
+    multipliedData += currentIndex * nums[index];
+    summedIndex += currentIndex;
+    squaredIndex += currentIndex * currentIndex;
+  }
+
+  double numerator =
+      (nums.length * multipliedData) - (summedNums * summedIndex);
+  int denominator = (nums.length * squaredIndex) - (summedIndex * summedIndex);
+  denominator.toDouble();
+
+  if (denominator != 0) {
+    return numerator / denominator;
+  } else {
+    return 0; // Return 0 if denominator is zero to avoid division by zero
+  }
+}
