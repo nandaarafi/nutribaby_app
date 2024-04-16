@@ -20,12 +20,14 @@ class HealthModel extends Equatable {
   List<Object?> get props => [weight, height, headCircumference, dateTime];
 }
 
-class LineData extends Equatable {
-  final double sideValue;
-  final DateTime date;
+class LineData {
+  String documentId;
+  double sideValue;
+  DateTime date;
 
 
   LineData({
+      required this.documentId,
       required this.sideValue,
       required this.date
   });

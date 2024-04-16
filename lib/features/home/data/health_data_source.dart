@@ -101,6 +101,24 @@ class HealthService {
   //     throw e;
   //   }
 
+  Future<void> updateHealthData(String labelData, LineData lineData) async{
+    try{
+      var collection = FirebaseFirestore.instance
+          .collection('users')
+          .doc(_auth.currentUser!.uid)
+          .collection('health');
+      Timestamp timestamp = Timestamp.fromDate(lineData.date);
+
+      await collection.doc(lineData.documentId).update({
+        '$labelData': lineData.sideValue,
+        'dateTime': timestamp,
+        // Add more fields to update as needed
+      });
+    } catch (e){
+      throw(e);
+    }
+  }
+
   Future<Map<String, List<List<dynamic>>>> fetchHealthData(
       {int limit = 8}) async {
     try {
@@ -109,31 +127,23 @@ class HealthService {
           .doc(_auth.currentUser!.uid)
           .collection('health')
           .orderBy("dateTime", descending: true)
-
+          .limit(limit)
+          .get();
           // .where('dateTime',
           // isGreaterThan: DateTime.now().subtract(Duration(days: 7)),
           // isLessThan: DateTime.now())
-          .limit(limit)
-          .get();
 
     List<List<dynamic>> weightDataList = [];
       List<List<dynamic>> heightDataList = [];
       List<List<dynamic>> headCircumferenceDataList = [];
 
       for (QueryDocumentSnapshot docSnapshot in querySnapshot.docs) {
+        String documentId = docSnapshot.id; // Get the document ID
         Map<String, dynamic> data = docSnapshot.data() as Map<String, dynamic>;
-        // print(data);
         DateTime timestamp = (data['dateTime'] as Timestamp).toDate();
-
-        // Add weight data
-        weightDataList.add([data['weight'] ?? 0.0, timestamp]);
-
-        // Add height data
-        heightDataList.add([data['height'] ?? 0.0, timestamp]);
-
-        // Add head circumference data
-        headCircumferenceDataList.add(
-            [data['headCircumference'] ?? 0.0, timestamp]);
+        weightDataList.add([documentId, data['weight'] ?? 0.0, timestamp]);
+        heightDataList.add([documentId, data['height'] ?? 0.0, timestamp]);
+        headCircumferenceDataList.add([documentId, data['headCircumference'] ?? 0.0, timestamp]);
       }
       // print(weightDataList);
 
@@ -174,19 +184,19 @@ class HealthService {
       List<List<dynamic>> headCircumferenceDataList = [];
 
       for (QueryDocumentSnapshot docSnapshot in querySnapshot.docs) {
+        String documentId = docSnapshot.id; // Get the document ID
         Map<String, dynamic> data = docSnapshot.data() as Map<String, dynamic>;
         // print(data);
         DateTime timestamp = (data['dateTime'] as Timestamp).toDate();
 
         // Add weight data
-        weightDataList.add([data['weight'] ?? 0.0, timestamp]);
+        weightDataList.add([documentId, data['weight'] ?? 0.0, timestamp]);
 
         // Add height data
-        heightDataList.add([data['height'] ?? 0.0, timestamp]);
+        heightDataList.add([documentId, data['height'] ?? 0.0, timestamp]);
 
         // Add head circumference data
-        headCircumferenceDataList.add(
-            [data['headCircumference'] ?? 0.0, timestamp]);
+        headCircumferenceDataList.add([documentId, data['headCircumference'] ?? 0.0, timestamp]);
       }
       // print(weightDataList);
 
@@ -203,32 +213,32 @@ class HealthService {
     }
   }
 
-  Future<void> getLineData() async{
-    try{
-      QuerySnapshot<Map<String, dynamic>> querySnapshot =
-      await _healthReference
-          .doc(_auth.currentUser!.uid)
-          .collection('health')
-          .orderBy('dateTime', descending: false)
-          // .where('weight',isNotEqualTo: null)
-          // .where('dateTime', isNotEqualTo: null)
-          .get();
-
-      List<LineData> lineDataList = querySnapshot.docs.map((doc) {
-        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-
-        // Make sure to replace 'sideValue' and 'date' with the actual field names in your Firestore documents
-        return LineData(
-          sideValue: data['height'] ?? 0.0,
-          date: (data['dateTime'] as Timestamp).toDate(),
-        );
-      }).toList();
-
-      print(lineDataList);
-    }catch(e){
-      throw(e);
-    }
-  }
+  // Future<void> getLineData() async{
+  //   try{
+  //     QuerySnapshot<Map<String, dynamic>> querySnapshot =
+  //     await _healthReference
+  //         .doc(_auth.currentUser!.uid)
+  //         .collection('health')
+  //         .orderBy('dateTime', descending: false)
+  //         // .where('weight',isNotEqualTo: null)
+  //         // .where('dateTime', isNotEqualTo: null)
+  //         .get();
+  //
+  //     List<LineData> lineDataList = querySnapshot.docs.map((doc) {
+  //       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+  //
+  //       // Make sure to replace 'sideValue' and 'date' with the actual field names in your Firestore documents
+  //       return LineData(
+  //         sideValue: data['height'] ?? 0.0,
+  //         date: (data['dateTime'] as Timestamp).toDate(),
+  //       );
+  //     }).toList();
+  //
+  //     print(lineDataList);
+  //   }catch(e){
+  //     throw(e);
+  //   }
+  // }
 
 
 
@@ -277,8 +287,10 @@ class HealthService {
       String dataType) {
     List<LineData> lineDataList = healthData[dataType]?.map((entry) {
       return LineData(
-        sideValue: entry[0] as double,
-        date: entry[1] as DateTime,
+
+        documentId: entry[0] as String,
+        sideValue: entry[1] as double,
+        date: entry[2] as DateTime,
       );
     }).toList() ?? [];
 

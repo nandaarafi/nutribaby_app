@@ -88,7 +88,7 @@ class _ChartScreenState extends State<ChartScreen> {
                             children: [
                               FCategoryTab(dataList: weightDataList, labelTable: "Berat", unit: "kg", restorationId: 'main'),
                               FCategoryTab(dataList: heightDataList, labelTable: "Tinggi", unit: "cm", restorationId: 'main'),
-                              FCategoryTab(dataList: headCircumferenceDataList, labelTable: "LingkarKepala", unit: "mm", restorationId: 'main'),
+                              FCategoryTab(dataList: headCircumferenceDataList, labelTable: "LingkarKepala", unit: "cm", restorationId: 'main'),
                               ConclusionScreen(),
                             ],
                           );
