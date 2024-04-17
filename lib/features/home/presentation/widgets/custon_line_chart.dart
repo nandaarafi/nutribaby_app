@@ -4,9 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nutribaby_app/core/constants/colors.dart';
-import 'package:nutribaby_app/core/helper/helper_functions.dart';
 import 'package:nutribaby_app/features/home/presentation/provider/chart_controller.dart';
-import 'package:nutribaby_app/features/home/presentation/widgets/zoomable_chart.dart';
 import 'package:provider/provider.dart';
 import '../../domain/health_data_model.dart';
 

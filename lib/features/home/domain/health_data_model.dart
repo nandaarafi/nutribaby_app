@@ -1,14 +1,12 @@
 import 'package:equatable/equatable.dart';
 
 class HealthModel extends Equatable {
-  // final String id;
   final double weight;
   final double height;
   final double headCircumference;
   final DateTime dateTime;
 
   HealthModel({
-    // required this.id,
     required this.weight,
     required this.height,
     required this.headCircumference,
@@ -18,6 +16,22 @@ class HealthModel extends Equatable {
 
   @override
   List<Object?> get props => [weight, height, headCircumference, dateTime];
+}
+
+class TrendModel extends Equatable {
+  final double weightTrend;
+  final double heightTrend;
+  final double headCircumferenceTrend;
+
+  TrendModel({
+    required this.weightTrend,
+    required this.heightTrend,
+    required this.headCircumferenceTrend,
+  });
+
+
+  @override
+  List<Object?> get props => [weightTrend, heightTrend, headCircumferenceTrend];
 }
 
 class LineData {
@@ -50,6 +64,8 @@ class LineData {
   @override
   List<Object?> get props => [sideValue, date];
 }
+
+
 //
 //   factory HealthModel.fromJson(String id, Map<String, dynamic> json) =>
 //       HealthModel(
