@@ -37,11 +37,12 @@ class UsecaseModel{
     double summedSideValues =
     dataListReversed.map((data) => data.sideValue).reduce((a, b) => a + b);
     double multipliedData = 0;
+
     int summedIndex = 0;
     int squaredIndex = 0;
 
     for (int index = 0; index < dataListReversed.length; index++) {
-      int currentIndex = index + 1; // Adjust index for 1-based counting
+      int currentIndex = index + 1;
       multipliedData += currentIndex * dataListReversed[index].sideValue;
       summedIndex += currentIndex;
       squaredIndex += currentIndex * currentIndex;

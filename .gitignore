@@ -3,6 +3,7 @@
 *.log
 *.pyc
 *.swp
+*.zip
 .DS_Store
 .atom/
 .buildlog/
@@ -10,6 +11,7 @@
 .svn/
 migrate_working_dir/
 AssetHasil/
+
 
 # IntelliJ related
 *.iml

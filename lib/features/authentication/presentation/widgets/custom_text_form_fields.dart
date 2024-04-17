@@ -7,7 +7,7 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 class CustomTextFormField extends StatefulWidget {
   final String title;
   final String hintText;
-  final Icon? icon;
+  final Widget? icon;
   final bool obsecureText;
   final VoidCallback? onTap;
   final TextEditingController controller;

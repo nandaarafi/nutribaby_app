@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 
-// import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:nutribaby_app/core/helper/helper_functions.dart';
 import 'package:nutribaby_app/core/routes/constants.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/routes/routes.dart';
 import '../cubit/auth_cubit.dart';
+import '../provider/password_vis_provider.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_text_form_fields.dart';
 
@@ -60,14 +59,23 @@ class _LoginScreenState extends State<LoginScreen> {
 
       Widget passwordInput() {
         final passFocusNode = FocusNode(); // Create a FocusNode
-        return CustomTextFormField(
-          title: 'Password',
-          hintText: 'password',
-          onTap: () => FocusScope.of(context).unfocus(),
-          obsecureText: true,
-          controller: passwordController,
-          icon: Icon(Icons.key),
-          // focusNode: passFocusNode,
+        return Consumer<PasswordVisibilityProvider>(
+            builder: (context, passwordVisibilityProvider, _) {
+            return CustomTextFormField(
+              title: 'Password',
+              hintText: 'password',
+              onTap: () => FocusScope.of(context).unfocus(),
+              obsecureText: passwordVisibilityProvider.obscureText,
+              controller: passwordController,
+              icon: IconButton(
+                  onPressed: () {
+                    passwordVisibilityProvider.toggleObscureText();
+                  },
+                  icon: Icon(
+                      passwordVisibilityProvider.obscureText
+                      ? Icons.visibility
+                      : Icons.visibility_off)));
+          }
         );
       }
 

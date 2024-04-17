@@ -8,6 +8,7 @@ import 'package:nutribaby_app/features/home/presentation/cubit/health_realtime_c
 import 'package:provider/provider.dart';
 import 'core/theme/theme.dart';
 import 'features/authentication/presentation/cubit/auth_cubit.dart';
+import 'features/authentication/presentation/provider/password_vis_provider.dart';
 import 'features/home/presentation/cubit/health_chart_data_cubit.dart';
 import 'features/home/presentation/provider/chart_controller.dart';
 import 'features/home/presentation/provider/trends_state_provider.dart';
@@ -22,6 +23,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => DateProvider()),
         ChangeNotifierProvider(create: (_) => ChartDataProvider()),
         ChangeNotifierProvider(create: (_) => TrendStateProvider()),
+        ChangeNotifierProvider(create: (_) => PasswordVisibilityProvider()),
       ],
       child: const MyApp(),
     ),
