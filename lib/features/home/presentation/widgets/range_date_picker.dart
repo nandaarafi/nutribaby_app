@@ -9,11 +9,9 @@ class DatePickerExample extends StatefulWidget {
   State<DatePickerExample> createState() => _DatePickerExampleState();
 }
 
-/// RestorationProperty objects can be used because of RestorationMixin.
 class _DatePickerExampleState extends State<DatePickerExample>
     with RestorationMixin {
-  // In this example, the restoration ID for the mixin is passed in through
-  // the [StatefulWidget]'s constructor.
+
   @override
   String? get restorationId => widget.restorationId;
 

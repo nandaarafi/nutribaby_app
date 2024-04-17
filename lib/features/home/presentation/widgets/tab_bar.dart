@@ -1,12 +1,8 @@
-import 'dart:ffi';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_table_2/data_table_2.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:nutribaby_app/core/helper/helper_functions.dart';
 import 'package:nutribaby_app/features/authentication/presentation/cubit/auth_cubit.dart';
 import 'package:provider/provider.dart';
@@ -18,12 +14,9 @@ import '../../data/health_data_source.dart';
 import '../../domain/health_data_model.dart';
 import '../cubit/health_chart_data_cubit.dart';
 import '../provider/chart_controller.dart';
-import '../screen/chart_screen.dart';
 import 'custon_line_chart.dart';
-import 'package:equatable/equatable.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:intl/intl.dart';
-import 'package:get/get.dart';
 
 class FCategoryTab extends StatefulWidget {
   final List<LineData> dataList;
@@ -49,16 +42,13 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
 
   @override
   void initState() {
-    //TODO: Argument to Kesimpulan
-    double trend = calculateTrend(widget.dataList);
-    print(trend);
+    // //TODO: Argument to Kesimpulan
+    // double trend = calculateTrend(widget.dataList);
+    // print(trend);
     super.initState();
   }
-
-  // String? get restorationId => widget.restorationId;
   final TextEditingController _dateController = TextEditingController();
 
-  // }
   String _selectedDate = '';
   String _dateCount = '';
   String _range = '';
@@ -114,6 +104,7 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              //Dropdown week month
               // Align(
               //   widthFactor: 4,
               //   alignment: Alignment.centerRight,
@@ -224,20 +215,10 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                             provider.setShowingChart(true);
                             provider.setFetchInitial(false);
                             widget.dataList.clear();
-
-                            // }
                           } catch (error) {
-                            // Handle any errors that occur during fetch
                             print('Error fetching data: $error');
-                            // Optionally, show error message to user
-                            // ScaffoldMessenger.of(context).showSnackBar(
-                            //   SnackBar(
-                            //     content: Text('Error fetching data: $error'),
-                            //   ),
-                            // );
-                          }
 
-                          // Initiating data fetch operation
+                          }
                         }
                       },
                       child: Container(
@@ -491,6 +472,7 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                       ),
                     ),
                     SizedBox(height: 10),
+                    //GenerateData
                     // ElevatedButton(
                     //   onPressed: () async {
                     //     try {
@@ -623,56 +605,4 @@ String agregateBirthdate(DateTime birthDate) {
   //   ageString = ageString.substring(0, maxLength) + '...';
   // }
   return ageString;
-}
-
-double calculateTrend(List<LineData> dataList) {
-  if (dataList.isEmpty) {
-    return 0;
-  }
-
-  double summedSideValues =
-      dataList.map((data) => data.sideValue).reduce((a, b) => a + b);
-  double multipliedData = 0;
-  int summedIndex = 0;
-  int squaredIndex = 0;
-
-  for (int index = 0; index < dataList.length; index++) {
-    int currentIndex = index + 1; // Adjust index for 1-based counting
-    multipliedData += currentIndex * dataList[index].sideValue;
-    summedIndex += currentIndex;
-    squaredIndex += currentIndex * currentIndex;
-  }
-
-  double numerator =
-      (dataList.length * multipliedData) - (summedSideValues * summedIndex);
-  int denominator =
-      ((dataList.length * squaredIndex) - (summedIndex * summedIndex));
-  denominator.toDouble();
-
-  return denominator != 0 ? numerator / denominator : 0;
-}
-
-double trendValue(List<double> nums) {
-  double summedNums = nums.reduce((a, b) => a + b);
-  double multipliedData = 0;
-  int summedIndex = 0;
-  int squaredIndex = 0;
-
-  for (int index = 0; index < nums.length; index++) {
-    int currentIndex = index + 1; // Adjust index for 1-based counting
-    multipliedData += currentIndex * nums[index];
-    summedIndex += currentIndex;
-    squaredIndex += currentIndex * currentIndex;
-  }
-
-  double numerator =
-      (nums.length * multipliedData) - (summedNums * summedIndex);
-  int denominator = (nums.length * squaredIndex) - (summedIndex * summedIndex);
-  denominator.toDouble();
-
-  if (denominator != 0) {
-    return numerator / denominator;
-  } else {
-    return 0; // Return 0 if denominator is zero to avoid division by zero
-  }
 }

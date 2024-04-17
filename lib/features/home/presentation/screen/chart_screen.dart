@@ -1,15 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:nutribaby_app/core/routes/routes.dart';
-import 'package:nutribaby_app/features/authentication/presentation/widgets/custom_date_picker.dart';
-import 'package:nutribaby_app/features/home/data/health_data_source.dart';
+import 'package:nutribaby_app/features/home/domain/usecases/calculate_trends_data.dart';
 import 'package:nutribaby_app/features/home/presentation/screen/loading_screen.dart';
 import 'package:nutribaby_app/features/home/presentation/widgets/tab_bar_conclusion.dart';
 import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 
 import '../../../../core/constants/colors.dart';
@@ -20,8 +15,7 @@ import '../cubit/health_chart_data_cubit.dart';
 import '../cubit/health_cubit.dart';
 import '../provider/chart_controller.dart';
 import '../widgets/app_bar.dart';
-import '../widgets/custom_bar_chart.dart';
-import '../widgets/custon_line_chart.dart';
+
 import '../widgets/tab_bar.dart';
 
 
@@ -44,6 +38,7 @@ class _ChartScreenState extends State<ChartScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return DefaultTabController(
       length: 4,
       child: Scaffold(
@@ -53,7 +48,6 @@ class _ChartScreenState extends State<ChartScreen> {
             SizedBox(height: 20),
             TabBar(
               onTap: (selectedTabIndex) {
-                // Handle tab selection if needed
               },
               tabAlignment: TabAlignment.center,
               labelStyle: Theme.of(context).textTheme.subtitle1,
@@ -79,6 +73,10 @@ class _ChartScreenState extends State<ChartScreen> {
                           List<LineData> heightDataList = state.health['height'] ?? [];
                           List<LineData> headCircumferenceDataList = state.health['headCircumference'] ?? [];
 
+                          double weightTrend = UsecaseModel().calculateTrendPercentageReversed(weightDataList);
+                          double heightTrend = UsecaseModel().calculateTrendPercentageReversed(heightDataList);
+                          double headCircumferenceTrend = UsecaseModel().calculateTrendPercentageReversed(headCircumferenceDataList);
+
                           print("Weight Data List: $weightDataList");
                           print("Height Data List: $heightDataList");
                           print("Head Circumference Data List: $headCircumferenceDataList");
@@ -89,7 +87,7 @@ class _ChartScreenState extends State<ChartScreen> {
                               FCategoryTab(labelUpdateTable: 'weight',dataList: weightDataList, labelTable: "Berat", unit: "kg", restorationId: 'main'),
                               FCategoryTab(labelUpdateTable: 'height',dataList: heightDataList, labelTable: "Tinggi", unit: "cm", restorationId: 'main'),
                               FCategoryTab(labelUpdateTable:'headCircumference',dataList: headCircumferenceDataList, labelTable: "LingkarKepala", unit: "cm", restorationId: 'main'),
-                              ConclusionScreen(),
+                              ConclusionScreen(weightTrends: weightTrend, heightTrends: heightTrend, headCircumferenceTrends: headCircumferenceTrend),
                             ],
                           );
                         } else if (state is HealthFailed) {
@@ -115,13 +113,18 @@ class _ChartScreenState extends State<ChartScreen> {
                           print("Height Data List: $heightDataList");
                           print("Head Circumference Data List: $headCircumferenceDataList");
 
+                          double weightTrend = UsecaseModel().calculateTrendPercentage(weightDataList);
+                          double heightTrend = UsecaseModel().calculateTrendPercentage(heightDataList);
+                          double headCircumferenceTrend = UsecaseModel().calculateTrendPercentage(headCircumferenceDataList);
+
+
                           return TabBarView(
                             physics: NeverScrollableScrollPhysics(),
                             children: [
                               FCategoryTab(labelUpdateTable: 'weight',dataList: weightDataList, labelTable: "Berat", unit: "kg", restorationId: 'main'),
                               FCategoryTab(labelUpdateTable: 'height',dataList: heightDataList, labelTable: "Tinggi", unit: "cm", restorationId: 'main'),
                               FCategoryTab(labelUpdateTable:'headCircumference',dataList: headCircumferenceDataList, labelTable: "LingkarKepala", unit: "cm", restorationId: 'main'),
-                              ConclusionScreen(),
+                              ConclusionScreen(weightTrends: weightTrend, heightTrends: heightTrend, headCircumferenceTrends: headCircumferenceTrend),
                             ],
                           );
                         } else if (state is HealthNewFailed) {
