@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iconsax/iconsax.dart';
 
 import 'package:intl/intl.dart';
 import 'package:nutribaby_app/core/constants/colors.dart';
@@ -141,7 +140,8 @@ class _AddHealthScreenState extends State<AddHealthScreen> {
               backgroundColor: NColors.white,
               content: Text(state.error),
             ),
-          );        }
+          );
+        }
       },
       builder: (context, state) {
         if (state is HealthRealtimeLoading) {

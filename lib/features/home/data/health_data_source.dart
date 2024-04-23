@@ -182,8 +182,7 @@ class HealthService {
     try {
       final weight = await _healthRealRef.child('weight').get();
       final height = await _healthRealRef.child('height').get();
-      final headCircumference = await _healthRealRef.child('lingkarKepala')
-          .get();
+      final headCircumference = await _healthRealRef.child('lingkarKepala').get();
 
       final DateLocalNow = DateFormat('dd-MM-yyyy').format(DateTime.now());
       print(weight);
@@ -192,7 +191,6 @@ class HealthService {
       if (weight.exists && height.exists && headCircumference.exists) {
         final List<HealthRealModel> healthDataList = [
           HealthRealModel(
-
               weight: '${weight.value}' ,// Add 'kg' as a unit
               height: '${height.value}',
               headCircumference: '${headCircumference.value}',
@@ -209,6 +207,28 @@ class HealthService {
     } catch (error) {
       print('Error fetching data: $error');
       return []; // Return an empty list in case of an error
+    }
+  }
+
+  Future<String?> fetchRealtimeConclusion() async {
+    try {
+      final data = await _healthRealRef.child('weight').get();
+
+      if (data.exists) {
+        if (data.value is String) {
+          String value = data.value as String;
+          return value;
+        } else {
+          print("Error: Unexpected data type for 'weight'");
+          return null;
+        }
+      } else {
+        print("Error: Data does not exist at 'weight'");
+        return null;
+      }
+    } catch (e) {
+      print("Error getting data: $e");
+      return null;
     }
   }
 

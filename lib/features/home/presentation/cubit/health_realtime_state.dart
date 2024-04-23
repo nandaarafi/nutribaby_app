@@ -20,6 +20,14 @@ class HealthRealtimeSuccess extends HealthRealtimeState {
   @override
   List<Object> get props => [healthReal];
 }
+class HealthRealtimeConclusionSucces extends HealthRealtimeState {
+  final String healthReal;
+
+  HealthRealtimeConclusionSucces(this.healthReal);
+
+  @override
+  List<Object> get props => [healthReal];
+}
 
 class HealthRealtimeFailed extends HealthRealtimeState {
   final String error;

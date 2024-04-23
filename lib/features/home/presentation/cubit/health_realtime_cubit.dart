@@ -20,4 +20,17 @@ class HealthRealtimeCubit extends Cubit<HealthRealtimeState> {
       emit(HealthRealtimeFailed(e.toString()));
     }
   }
+
+  void fetchRealtimeConclusion() async {
+    try {
+      emit(HealthRealtimeLoading());
+
+      String? healthReal =
+      await HealthService().fetchRealtimeConclusion();
+
+      emit(HealthRealtimeConclusionSucces(healthReal!));
+    } catch (e) {
+      emit(HealthRealtimeFailed(e.toString()));
+    }
+  }
 }
