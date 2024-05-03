@@ -14,7 +14,7 @@ class Routes{
   static const profileDetailsNamedPage = 'details';
   static const settingsNamedPage = '/settings';
   static const loadingNamedPage = '/loading';
-  static const forgetPassPage = '/forget';
+  static const forgetPassPage = '/forgot-pass';
 
 
   static Widget errorWidget(BuildContext context, GoRouterState state) =>

@@ -102,7 +102,8 @@ class _LoginScreenState extends State<LoginScreen> {
               if(state.user.role == 'super_admin'){
                 AppRouter.router.go(Routes.signUpNamedPage);
               }else{
-                AppRouter.router.go(Routes.homeNamedPage);
+                AppRouter.router.go('/add');
+                // AppRouter.router.go(Routes.homeNamedPage);
               }
             } else if (state is AuthFailed) {
               NHelperFunctions.dismissKeyboard(context);

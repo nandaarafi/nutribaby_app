@@ -77,9 +77,9 @@ class _ChartScreenState extends State<ChartScreen> {
                           double heightTrend = UsecaseModel().calculateTrendPercentageReversed(heightDataList);
                           double headCircumferenceTrend = UsecaseModel().calculateTrendPercentageReversed(headCircumferenceDataList);
 
-                          print("Weight Data List: $weightDataList");
-                          print("Height Data List: $heightDataList");
-                          print("Head Circumference Data List: $headCircumferenceDataList");
+                          // print("Weight Data List: $weightDataList");
+                          // print("Height Data List: $heightDataList");
+                          // print("Head Circumference Data List: $headCircumferenceDataList");
 
                           return TabBarView(
                             physics: NeverScrollableScrollPhysics(),

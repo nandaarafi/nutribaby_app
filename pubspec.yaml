@@ -66,6 +66,8 @@ dependencies:
   syncfusion_flutter_charts: ^22.2.8
   #Icon
   iconsax: ^0.0.8
+  ficonsax: ^0.0.3
+
   #Dateformatter
   intl: ^0.18.1
 
