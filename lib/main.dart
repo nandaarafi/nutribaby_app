@@ -6,7 +6,6 @@ import 'package:nutribaby_app/features/authentication/presentation/provider/date
 import 'package:nutribaby_app/features/home/presentation/cubit/health_cubit.dart';
 import 'package:nutribaby_app/features/home/presentation/cubit/health_realtime_cubit.dart';
 import 'package:provider/provider.dart';
-import 'core/routes/navbar/nav_bar_route.dart';
 import 'core/theme/theme.dart';
 import 'features/authentication/presentation/cubit/auth_cubit.dart';
 import 'features/authentication/presentation/provider/password_vis_provider.dart';
