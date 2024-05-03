@@ -208,9 +208,13 @@ class HealthService {
     }
   }
 
+  Future<void> signOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
   Future<String?> fetchRealtimeConclusion() async {
     try {
-      final data = await _healthRealRef.child('nilai-berat').get();
+      final data = await _healthRealRef.child('status-kesimpulan').get();
 
       if (data.exists) {
         if (data.value is String) {

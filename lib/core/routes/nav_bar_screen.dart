@@ -34,28 +34,33 @@ class ScaffoldWithNavBar extends StatelessWidget {
       "Favorite",
       "Profile",
     ];
-    return Scaffold(
-      body: child,
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            backgroundColor: Colors.white,
-            icon: Icon(Icons.add),
-            label: 'Tambah',
-          ),
-          BottomNavigationBarItem(
-            backgroundColor: Colors.white,
-            icon: Icon(Icons.graphic_eq),
-            label: 'Grafik',
-          ),
-          BottomNavigationBarItem(
-            backgroundColor: Colors.white,
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex: _calculateSelectedIndex(context),
-        onTap: (int idx) => _onItemTapped(idx, context),
+    return PopScope(
+      canPop: true,
+      onPopInvoked: (didpop){
+      },
+      child: Scaffold(
+        body: child,
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              backgroundColor: Colors.white,
+              icon: Icon(Icons.add),
+              label: 'Tambah',
+            ),
+            BottomNavigationBarItem(
+              backgroundColor: Colors.white,
+              icon: Icon(Icons.graphic_eq),
+              label: 'Grafik',
+            ),
+            BottomNavigationBarItem(
+              backgroundColor: Colors.white,
+              icon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+          ],
+          currentIndex: _calculateSelectedIndex(context),
+          onTap: (int idx) => _onItemTapped(idx, context),
+        ),
       ),
     );
   }

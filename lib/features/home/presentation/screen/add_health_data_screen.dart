@@ -15,6 +15,7 @@ import 'package:nutribaby_app/features/home/data/health_data_source.dart';
 import 'package:nutribaby_app/features/home/presentation/cubit/health_cubit.dart';
 import 'package:nutribaby_app/features/home/presentation/cubit/health_realtime_cubit.dart';
 
+import '../../../authentication/presentation/screen/sign_up_screen.dart';
 import '../../../authentication/presentation/widgets/custom_button.dart';
 import '../../../authentication/presentation/widgets/custom_text_form_fields.dart';
 
@@ -39,25 +40,32 @@ class _AddHealthScreenState extends State<AddHealthScreen> {
     weightController.dispose();
     heightController.dispose();
     headCircumferenceController.dispose();
+    dateInputController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MyAppBar(),
-      backgroundColor: NColors.white,
-      body: SafeArea(
-        child: Stack(
-          children: [
-            ListView(
-              padding: EdgeInsets.symmetric(horizontal: 24),
-              children: [
-                inputSection(),
-              ],
-            ),
-            nextButton(),
-          ],
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didpop){
+        //DONOTHING
+      },
+      child: Scaffold(
+        appBar: MyAppBar(),
+        backgroundColor: NColors.white,
+        body: SafeArea(
+          child: Stack(
+            children: [
+              ListView(
+                padding: EdgeInsets.symmetric(horizontal: 24),
+                children: [
+                  inputSection(),
+                ],
+              ),
+              // nextButton(),
+            ],
+          ),
         ),
       ),
     );
@@ -92,7 +100,7 @@ class _AddHealthScreenState extends State<AddHealthScreen> {
       hintText: '',
       controller: weightController,
       suffixText: "kg",
-      widthSuffix: 50,
+      widthSuffix: 60,
     );
   }
 
@@ -102,7 +110,7 @@ class _AddHealthScreenState extends State<AddHealthScreen> {
       hintText: '',
       controller: heightController,
       suffixText: "cm",
-      widthSuffix: 58,
+      widthSuffix: 68,
     );
   }
 
@@ -112,7 +120,7 @@ class _AddHealthScreenState extends State<AddHealthScreen> {
       hintText: '',
       controller: headCircumferenceController,
       suffixText: 'mm',
-      widthSuffix: 65,
+      widthSuffix: 75,
     );
   }
 
@@ -129,6 +137,7 @@ class _AddHealthScreenState extends State<AddHealthScreen> {
       listener: (context, state) {
         if (state is HealthRealtimeSuccess) {
           for (var healthRealModel in state.healthReal) {
+            print(weightController.text);
             weightController.text = healthRealModel.weight.toString();
             heightController.text = healthRealModel.height.toString();
             headCircumferenceController.text = healthRealModel.headCircumference.toString();
@@ -183,7 +192,7 @@ class _AddHealthScreenState extends State<AddHealthScreen> {
               actions: [
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop(); // Dismiss the dialog
+                    AppRouter.router.pop();
                     AppRouter.router.go(Routes.homeChartPage);
                   },
                   child: Text("OK"),
@@ -201,7 +210,7 @@ class _AddHealthScreenState extends State<AddHealthScreen> {
               actions: [
                 TextButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    AppRouter.router.pop();
                   },
                   child: Text("OK"),
                 ),
@@ -219,14 +228,11 @@ class _AddHealthScreenState extends State<AddHealthScreen> {
         return CustomButton(
           title: 'Simpan Data',
           onPressed: () {
-            DateFormat format = new DateFormat("dd-MM-yyyy");
-            DateTime dateTime = format.parse(dateInputController.text);
-            print(dateTime);
             context.read<HealthCubit>().addData(
               height: double.parse(heightController.text),
               weight: double.parse(weightController.text),
               headCircumference: double.parse(headCircumferenceController.text),
-              dateTime: dateTime
+              dateTime: parseDate(dateInputController.text)
             );
           },
         );
@@ -256,7 +262,7 @@ class _AddHealthScreenState extends State<AddHealthScreen> {
                   actions: [
                     TextButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        AppRouter.router.pop();
                       },
                       child: Text("OK"),
                     ),

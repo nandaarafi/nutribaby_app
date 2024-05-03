@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutribaby_app/core/helper/helper_functions.dart';
+import 'package:nutribaby_app/core/routes/routes.dart';
 import 'package:nutribaby_app/features/authentication/presentation/cubit/auth_cubit.dart';
 import 'package:provider/provider.dart';
 
@@ -63,7 +64,8 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
         _endDate != null ? DateFormat('dd MMM, yyyy').format(_endDate!) : '';
 
     _dateController.text = "$formattedStartDate - $formattedEndDate";
-    Navigator.of(context).pop();
+    AppRouter.router.pop();
+    // Navigator.of(context).pop();
   }
 
   void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
@@ -188,7 +190,7 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                               actions: [
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.pop(context);
+                                    AppRouter.router.pop();
                                   },
                                   child: Text("OK"),
                                 ),
@@ -196,17 +198,13 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                             ),
                           );
                         } else {
-                          ChartDataProvider provider =
-                              Provider.of<ChartDataProvider>(context,
-                                  listen: false);
+                          ChartDataProvider provider = Provider.of<ChartDataProvider>(context, listen: false);
 
                           provider.setShowingChart(false);
                           provider.setLoadingState(false);
 
                           try {
-                            await context
-                                .read<HealthChartDataCubit>()
-                                .fetchNewHealthData(_startDate!, _endDate!);
+                            await context.read<HealthChartDataCubit>().fetchNewHealthData(_startDate!, _endDate!);
                             // if (provider.emptyError) {
                             //  print("Empty List");
                             //   // Setting states after successful fetch
@@ -551,7 +549,7 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                 // Update lineData with new values
                 lineData.sideValue = double.parse(sideValueController.text);
                 // Close the dialog
-                Navigator.of(context).pop();
+                AppRouter.router.pop();
                 //WARNING: No State Management Update, just right on from data source :)
                 await HealthService()
                     .updateHealthData(widget.labelUpdateTable, lineData);
@@ -561,7 +559,7 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                AppRouter.router.pop();
               },
               child: Text('Cancel'),
             ),

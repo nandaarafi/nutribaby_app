@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/errors/exceptions.dart';
+import '../../../../core/routes/routes.dart';
 import '../cubit/auth_cubit.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_text_form_fields.dart';
@@ -85,7 +86,7 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
                     actions: [
                       TextButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          AppRouter.router.pop();
                         },
                         child: Text("OK"),
                       ),

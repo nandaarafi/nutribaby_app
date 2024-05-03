@@ -39,125 +39,128 @@ class _ChartScreenState extends State<ChartScreen> {
   @override
   Widget build(BuildContext context) {
 
-    return DefaultTabController(
-      length: 4,
-      child: Scaffold(
-        appBar: MyAppBarNBack(),
-        body: Column(
-          children: [
-            SizedBox(height: 20),
-            TabBar(
-              onTap: (selectedTabIndex) {
-              },
-              tabAlignment: TabAlignment.center,
-              labelStyle: Theme.of(context).textTheme.subtitle1,
-              isScrollable: true,
-              indicatorColor: Colors.blueAccent,
-              unselectedLabelColor: Color(0xff503F95),
-              labelColor: Colors.black,
-              tabs: [
-                Tab(child: Text("Berat", style: TextStyle(fontSize: 14))),
-                Tab(child: Text("Tinggi", style: TextStyle(fontSize: 14))),
-                Tab(child: Text("LingkarKepala", style: TextStyle(fontSize: 14))),
-                Tab(child: Text("Kesimpulan", style: TextStyle(fontSize: 14))),
-              ],
-            ),
-            Expanded(
-              child: Consumer<ChartDataProvider>(
-                builder: (context, provider, _) {
-                  if (provider.fetchInitial) {
-                    return BlocBuilder<HealthCubit, HealthState>(
-                      builder: (context, state) {
-                        if (state is HealthSuccess) {
-                          List<LineData> weightDataList = state.health['weight'] ?? [];
-                          List<LineData> heightDataList = state.health['height'] ?? [];
-                          List<LineData> headCircumferenceDataList = state.health['headCircumference'] ?? [];
+    return PopScope(
+      canPop: false,
+      child: DefaultTabController(
+        length: 4,
+        child: Scaffold(
+          appBar: MyAppBar(),
+          body: Column(
+            children: [
+              SizedBox(height: 20),
+              TabBar(
+                onTap: (selectedTabIndex) {
+                },
+                tabAlignment: TabAlignment.center,
+                labelStyle: Theme.of(context).textTheme.subtitle1,
+                isScrollable: true,
+                indicatorColor: Colors.blueAccent,
+                unselectedLabelColor: Color(0xff503F95),
+                labelColor: Colors.black,
+                tabs: [
+                  Tab(child: Text("Berat", style: TextStyle(fontSize: 14))),
+                  Tab(child: Text("Tinggi", style: TextStyle(fontSize: 14))),
+                  Tab(child: Text("LingkarKepala", style: TextStyle(fontSize: 14))),
+                  Tab(child: Text("Kesimpulan", style: TextStyle(fontSize: 14))),
+                ],
+              ),
+              Expanded(
+                child: Consumer<ChartDataProvider>(
+                  builder: (context, provider, _) {
+                    if (provider.fetchInitial) {
+                      return BlocBuilder<HealthCubit, HealthState>(
+                        builder: (context, state) {
+                          if (state is HealthSuccess) {
+                            List<LineData> weightDataList = state.health['weight'] ?? [];
+                            List<LineData> heightDataList = state.health['height'] ?? [];
+                            List<LineData> headCircumferenceDataList = state.health['headCircumference'] ?? [];
 
-                          double weightTrend = UsecaseModel().calculateTrendPercentageReversed(weightDataList);
-                          double heightTrend = UsecaseModel().calculateTrendPercentageReversed(heightDataList);
-                          double headCircumferenceTrend = UsecaseModel().calculateTrendPercentageReversed(headCircumferenceDataList);
+                            double weightTrend = UsecaseModel().calculateTrendPercentageReversed(weightDataList);
+                            double heightTrend = UsecaseModel().calculateTrendPercentageReversed(heightDataList);
+                            double headCircumferenceTrend = UsecaseModel().calculateTrendPercentageReversed(headCircumferenceDataList);
 
-                          // print("Weight Data List: $weightDataList");
-                          // print("Height Data List: $heightDataList");
-                          // print("Head Circumference Data List: $headCircumferenceDataList");
+                            // print("Weight Data List: $weightDataList");
+                            // print("Height Data List: $heightDataList");
+                            // print("Head Circumference Data List: $headCircumferenceDataList");
 
-                          return TabBarView(
-                            physics: NeverScrollableScrollPhysics(),
-                            children: [
-                              FCategoryTab(labelUpdateTable: 'weight',dataList: weightDataList, labelTable: "Berat", unit: "kg", restorationId: 'main'),
-                              FCategoryTab(labelUpdateTable: 'height',dataList: heightDataList, labelTable: "Tinggi", unit: "cm", restorationId: 'main'),
-                              FCategoryTab(labelUpdateTable:'headCircumference',dataList: headCircumferenceDataList, labelTable: "LingkarKepala", unit: "cm", restorationId: 'main'),
-                              ConclusionScreen(weightTrends: weightTrend, heightTrends: heightTrend, headCircumferenceTrends: headCircumferenceTrend),
-                            ],
-                          );
-                        } else if (state is HealthFailed) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              backgroundColor: NColors.white,
-                              content: Text(state.error),
-                            ),
-                          );
-                        }
-                        return Container(); // Return default container
-                      },
-                    );
-                  } else if (provider.showingChart) {
-                    return BlocBuilder<HealthChartDataCubit, HealthChartDataState>(
-                      builder: (context, state) {
-                        if (state is HealthNewSuccess) {
-                          List<LineData> weightDataList = state.health['weight'] ?? [];
-                          List<LineData> heightDataList = state.health['height'] ?? [];
-                          List<LineData> headCircumferenceDataList = state.health['headCircumference'] ?? [];
-
-                          print("Weight Data List: $weightDataList");
-                          print("Height Data List: $heightDataList");
-                          print("Head Circumference Data List: $headCircumferenceDataList");
-
-                          double weightTrend = UsecaseModel().calculateTrendPercentage(weightDataList);
-                          double heightTrend = UsecaseModel().calculateTrendPercentage(heightDataList);
-                          double headCircumferenceTrend = UsecaseModel().calculateTrendPercentage(headCircumferenceDataList);
-
-
-                          return TabBarView(
-                            physics: NeverScrollableScrollPhysics(),
-                            children: [
-                              FCategoryTab(labelUpdateTable: 'weight',dataList: weightDataList, labelTable: "Berat", unit: "kg", restorationId: 'main'),
-                              FCategoryTab(labelUpdateTable: 'height',dataList: heightDataList, labelTable: "Tinggi", unit: "cm", restorationId: 'main'),
-                              FCategoryTab(labelUpdateTable:'headCircumference',dataList: headCircumferenceDataList, labelTable: "LingkarKepala", unit: "cm", restorationId: 'main'),
-                              ConclusionScreen(weightTrends: weightTrend, heightTrends: heightTrend, headCircumferenceTrends: headCircumferenceTrend),
-                            ],
-                          );
-                        } else if (state is HealthNewFailed) {
-                          WidgetsBinding.instance!.addPostFrameCallback((_) {
-                            showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: Text("Error"),
+                            return TabBarView(
+                              physics: NeverScrollableScrollPhysics(),
+                              children: [
+                                FCategoryTab(labelUpdateTable: 'weight',dataList: weightDataList, labelTable: "Berat", unit: "kg", restorationId: 'main'),
+                                FCategoryTab(labelUpdateTable: 'height',dataList: heightDataList, labelTable: "Tinggi", unit: "cm", restorationId: 'main'),
+                                FCategoryTab(labelUpdateTable:'headCircumference',dataList: headCircumferenceDataList, labelTable: "LingkarKepala", unit: "cm", restorationId: 'main'),
+                                ConclusionScreen(weightTrends: weightTrend, heightTrends: heightTrend, headCircumferenceTrends: headCircumferenceTrend),
+                              ],
+                            );
+                          } else if (state is HealthFailed) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                backgroundColor: NColors.white,
                                 content: Text(state.error),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                      provider.setFetchInitial(true);
-                                      provider.setShowingChart(false);
-                                      _refreshScreen(context);
-                                    },
-                                    child: Text("OK"),
-                                  ),
-                                ],
                               ),
                             );
-                          });
-                        }
-                        return CircularProgressIndicator(); // Show loading indicator
-                      },
-                    );
-                  }
-                  return LoadingScreen(); // Default loading screen
-                },
+                          }
+                          return Container(); // Return default container
+                        },
+                      );
+                    } else if (provider.showingChart) {
+                      return BlocBuilder<HealthChartDataCubit, HealthChartDataState>(
+                        builder: (context, state) {
+                          if (state is HealthNewSuccess) {
+                            List<LineData> weightDataList = state.health['weight'] ?? [];
+                            List<LineData> heightDataList = state.health['height'] ?? [];
+                            List<LineData> headCircumferenceDataList = state.health['headCircumference'] ?? [];
+
+                            print("Weight Data List: $weightDataList");
+                            print("Height Data List: $heightDataList");
+                            print("Head Circumference Data List: $headCircumferenceDataList");
+
+                            double weightTrend = UsecaseModel().calculateTrendPercentage(weightDataList);
+                            double heightTrend = UsecaseModel().calculateTrendPercentage(heightDataList);
+                            double headCircumferenceTrend = UsecaseModel().calculateTrendPercentage(headCircumferenceDataList);
+
+
+                            return TabBarView(
+                              physics: NeverScrollableScrollPhysics(),
+                              children: [
+                                FCategoryTab(labelUpdateTable: 'weight',dataList: weightDataList, labelTable: "Berat", unit: "kg", restorationId: 'main'),
+                                FCategoryTab(labelUpdateTable: 'height',dataList: heightDataList, labelTable: "Tinggi", unit: "cm", restorationId: 'main'),
+                                FCategoryTab(labelUpdateTable:'headCircumference',dataList: headCircumferenceDataList, labelTable: "LingkarKepala", unit: "cm", restorationId: 'main'),
+                                ConclusionScreen(weightTrends: weightTrend, heightTrends: heightTrend, headCircumferenceTrends: headCircumferenceTrend),
+                              ],
+                            );
+                          } else if (state is HealthNewFailed) {
+                            WidgetsBinding.instance!.addPostFrameCallback((_) {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text("Error"),
+                                  content: Text(state.error),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        AppRouter.router.pop();
+                                        provider.setFetchInitial(true);
+                                        provider.setShowingChart(false);
+                                        _refreshScreen(context);
+                                      },
+                                      child: Text("OK"),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            });
+                          }
+                          return Container(); // Show loading indicator
+                        },
+                      );
+                    }
+                    return LoadingScreen(); // Default loading screen
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -115,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   actions: [
                     TextButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        AppRouter.router.pop();
                       },
                       child: Text("OK"),
                     ),
@@ -194,19 +194,25 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     }
 
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      backgroundColor: NColors.white,
-      body: SafeArea(
-        child: ListView(
-          padding: EdgeInsets.symmetric(
-            horizontal: 24,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didpop){
+
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        backgroundColor: NColors.white,
+        body: SafeArea(
+          child: ListView(
+            padding: EdgeInsets.symmetric(
+              horizontal: 24,
+            ),
+            children: [
+              title(),
+              inputSection(),
+              // signUpButton(),
+            ],
           ),
-          children: [
-            title(),
-            inputSection(),
-            // signUpButton(),
-          ],
         ),
       ),
     );

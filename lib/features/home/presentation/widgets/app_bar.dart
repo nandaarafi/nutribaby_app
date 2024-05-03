@@ -104,7 +104,7 @@ class MyAppBarNBack extends StatelessWidget implements PreferredSizeWidget {
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: () {
-                AppRouter.router.go(Routes.homeNamedPage);
+                AppRouter.router.go(Routes.addNamedPage);
               },
             ),
             toolbarHeight: 60,
@@ -188,7 +188,7 @@ class AppBarBack extends StatelessWidget  implements PreferredSizeWidget {
         icon: Icon(Icons.arrow_back),
         onPressed: () {
           // Use Navigator to pop the current route and go back
-          AppRouter.router.go(Routes.homeNamedPage);
+          AppRouter.router.go(Routes.addNamedPage);
         },
       ),
       title: Text('Your App Title'),

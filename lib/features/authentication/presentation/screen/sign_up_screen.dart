@@ -42,10 +42,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   final TextEditingController passwordController = TextEditingController(text: '');
   final TextEditingController dateNowController = TextEditingController(text: '');
-  final TextEditingController dateBirthController = TextEditingController();
-  final TextEditingController beratController = TextEditingController();
-  final TextEditingController tinggiController = TextEditingController();
-  final TextEditingController lingkarKepalaController = TextEditingController();
+  final TextEditingController dateBirthController = TextEditingController(text: '');
+  final TextEditingController beratController = TextEditingController(text: '');
+  final TextEditingController tinggiController = TextEditingController(text: '');
+  final TextEditingController lingkarKepalaController = TextEditingController(text: '');
 
   // final TextEditingController hobbyController = TextEditingController(text: '');
 
@@ -77,6 +77,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
     passwordController.dispose();
     parentNameController.dispose();
     babyNameController.dispose();
+    genderController.dispose();
+    dateNowController.dispose();
+    dateBirthController.dispose();
+    beratController.dispose();
+    tinggiController.dispose();
+    lingkarKepalaController.dispose();
     super.dispose();
   }
   @override
@@ -107,6 +113,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
           hintText: 'Masukan Nama Bayi',
           controller: babyNameController,
           icon: Icon(Iconsax.ruler),
+        );
+      }
+
+      Widget dateInput() {
+        return CustomTextFormField(
+          title: 'Tanggal Menyimpan Data',
+          hintText: '',
+          controller: dateNowController,
         );
       }
       Widget BeratInput() {
@@ -222,13 +236,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           icon: Icon(Icons.password),
         );
       }
-      Widget dateInput() {
-        return CustomTextFormField(
-          title: 'Tanggal Menyimpan Data',
-          hintText: '',
-          controller: dateNowController,
-        );
-      }
+
 
 
 
@@ -237,6 +245,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           listener: (context, state) {
             if (state is HealthRealtimeSuccess) {
               for (var healthRealModel in state.healthReal) {
+                print(beratController.text);
                 beratController.text = healthRealModel.weight.toString();
                 tinggiController.text = healthRealModel.height.toString();
                 lingkarKepalaController.text = healthRealModel.headCircumference.toString();
@@ -295,8 +304,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   actions: [
                     TextButton(
                       onPressed: () {
-                        Navigator.pop(context);
-                        AppRouter.router.go(Routes.homeChartPage);
+                        AppRouter.router.pop();
+                        AppRouter.router.go('/add');
                       },
                       child: Text("OK"),
                     ),
@@ -313,7 +322,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   actions: [
                     TextButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        AppRouter.router.pop();
                       },
                       child: Text("OK"),
                     ),
@@ -351,7 +360,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       actions: [
                         TextButton(
                           onPressed: () {
-                            Navigator.pop(context);
+                            AppRouter.router.pop();
                           },
                           child: Text("OK"),
                         ),
@@ -367,6 +376,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     parentName: parentNameController.text,
                     babyName: babyNameController.text,
                     birthdate: parseDate(dateBirthController.text),
+                    // birthdate: parseDate(dateBirthController.text),
                     gender: genderController.text,
                   );
 

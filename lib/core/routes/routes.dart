@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:nutribaby_app/features/authentication/presentation/screen/login_screen.dart';
 import 'package:nutribaby_app/features/home/presentation/screen/chart_screen.dart';
 import 'package:nutribaby_app/features/home/presentation/screen/loading_screen.dart';
+import 'package:nutribaby_app/features/home/presentation/screen/profile_screen.dart';
 import 'package:nutribaby_app/features/home/presentation/widgets/calendar.dart';
 import 'package:nutribaby_app/features/home/presentation/widgets/custon_line_chart.dart';
 
@@ -32,7 +33,7 @@ class AppRouter {
           },
           routes: <RouteBase>[
           GoRoute(
-            path: '/add',
+            path: Routes.addNamedPage,
             parentNavigatorKey: _shellNavigatorKey,
             pageBuilder: (BuildContext context, GoRouterState state){
               return NoTransitionPage(
@@ -41,7 +42,7 @@ class AppRouter {
             }
           ),
           GoRoute(
-            path: '/grafik',
+            path: Routes.homeChartPage,
             parentNavigatorKey: _shellNavigatorKey,
             pageBuilder: (BuildContext context, GoRouterState state){
               return NoTransitionPage(
@@ -49,34 +50,35 @@ class AppRouter {
   }
           ),
           GoRoute(
-            path: '/profile',
+            path: Routes.profileNamedPage,
             parentNavigatorKey: _shellNavigatorKey,
             pageBuilder: (BuildContext context, GoRouterState state) {
               return  NoTransitionPage(
-                child: Scaffold(
-                  body: Center(child: ElevatedButton(
-                      onPressed:() {}, child: Text("Logout"))),
-                ),
+                  child: ProfilScreen()
               );
             }
           ),
         ]
       ),
       GoRoute(
-        path: '/sign-in',
+        path: Routes.signInNamedPage,
         builder: (BuildContext context, GoRouterState state) =>  LoginScreen()
       ),
       GoRoute(
-        path: '/sign-up',
+        path: Routes.signUpNamedPage,
         builder: (BuildContext context, GoRouterState state) => const SignUpScreen()
       ),
       GoRoute(
           parentNavigatorKey: _rootNavigatorKey,
-          path: '/loading',
-          builder: (BuildContext context, GoRouterState state) => const LoadingScreen()
+          path: Routes.loadingNamedPage,
+          pageBuilder: (BuildContext context, GoRouterState state) {
+            return  NoTransitionPage(
+                child: LoadingScreen()
+            );
+          }
       ),
       GoRoute(
-          path: '/forgot-pass',
+          path: Routes.forgetPassPage,
           builder: (BuildContext context, GoRouterState state) => const ForgotPassScreen()
       ),
     ],
