@@ -42,8 +42,7 @@ class AuthService {
         required String gender,
         String role = ''}) async {
     try {
-      UserCredential userCredential = await _auth
-          .createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
 
       UserModel user = UserModel(
         id: userCredential.user!.uid,

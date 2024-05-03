@@ -6,11 +6,9 @@ import 'package:intl/intl.dart';
 import '../domain/health_data_model.dart';
 
 class HealthService {
-  final DatabaseReference _healthRealRef = FirebaseDatabase.instance.ref()
-      .child('health');
-  CollectionReference _healthReference = FirebaseFirestore.instance.collection(
-      'users');
+  CollectionReference _healthReference = FirebaseFirestore.instance.collection('users');
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final DatabaseReference _healthRealRef = FirebaseDatabase.instance.ref().child('${FirebaseAuth.instance.currentUser!.uid}');
 
 
   Future<bool> hasDataForToday(DateTime currentDate) async {
@@ -180,9 +178,9 @@ class HealthService {
 
   Future<List<HealthRealModel>> fetchRealtime() async {
     try {
-      final weight = await _healthRealRef.child('weight').get();
-      final height = await _healthRealRef.child('height').get();
-      final headCircumference = await _healthRealRef.child('lingkarKepala').get();
+      final weight = await _healthRealRef.child('nilai-berat').get();
+      final height = await _healthRealRef.child('nilai-kepala').get();
+      final headCircumference = await _healthRealRef.child('nilai-tinggi').get();
 
       final DateLocalNow = DateFormat('dd-MM-yyyy').format(DateTime.now());
       print(weight);
@@ -212,7 +210,7 @@ class HealthService {
 
   Future<String?> fetchRealtimeConclusion() async {
     try {
-      final data = await _healthRealRef.child('weight').get();
+      final data = await _healthRealRef.child('nilai-berat').get();
 
       if (data.exists) {
         if (data.value is String) {
