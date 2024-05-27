@@ -25,10 +25,10 @@ class HealthRealtimeCubit extends Cubit<HealthRealtimeState> {
     try {
       emit(HealthRealtimeLoading());
 
-      String? healthReal =
+      List<HealthConclusionModel> healthReal =
       await HealthService().fetchRealtimeConclusion();
 
-      emit(HealthRealtimeConclusionSucces(healthReal!));
+      emit(HealthRealtimeConclusionSucces(healthReal));
     } catch (e) {
       emit(HealthRealtimeFailed(e.toString()));
     }

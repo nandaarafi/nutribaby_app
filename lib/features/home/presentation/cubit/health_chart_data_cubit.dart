@@ -24,8 +24,7 @@ class HealthChartDataCubit extends Cubit<HealthChartDataState> {
       // } else {
         List<LineData> weightDataList = HealthService().convertDataToList(healthData, 'weight');
         List<LineData> heightDataList = HealthService().convertDataToList(healthData, 'height');
-        List<LineData> headCircumferenceDataList =
-        HealthService().convertDataToList(healthData, 'headCircumference');
+        List<LineData> headCircumferenceDataList = HealthService().convertDataToList(healthData, 'headCircumference');
 
         if (weightDataList.isEmpty || weightDataList == null){
           emit(HealthNewFailed("Data Error"));

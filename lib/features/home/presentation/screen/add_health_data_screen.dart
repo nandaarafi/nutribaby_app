@@ -100,7 +100,7 @@ class _AddHealthScreenState extends State<AddHealthScreen> {
       hintText: '',
       controller: weightController,
       suffixText: "kg",
-      widthSuffix: 60,
+      widthSuffix: 80,
     );
   }
 
@@ -110,7 +110,7 @@ class _AddHealthScreenState extends State<AddHealthScreen> {
       hintText: '',
       controller: heightController,
       suffixText: "cm",
-      widthSuffix: 68,
+      widthSuffix: 78,
     );
   }
 
@@ -119,8 +119,8 @@ class _AddHealthScreenState extends State<AddHealthScreen> {
       title: 'Lingkar Kepala',
       hintText: '',
       controller: headCircumferenceController,
-      suffixText: 'mm',
-      widthSuffix: 75,
+      suffixText: 'cm',
+      widthSuffix: 85,
     );
   }
 

@@ -1,12 +1,14 @@
 import 'package:equatable/equatable.dart';
 
 class HealthModel extends Equatable {
+  final String? documentId;
   final double weight;
   final double height;
   final double headCircumference;
   final DateTime dateTime;
 
   HealthModel({
+    this.documentId,
     required this.weight,
     required this.height,
     required this.headCircumference,
@@ -15,7 +17,7 @@ class HealthModel extends Equatable {
 
 
   @override
-  List<Object?> get props => [weight, height, headCircumference, dateTime];
+  List<Object?> get props => [documentId,weight, height, headCircumference, dateTime];
 }
 
 class TrendModel extends Equatable {
@@ -101,7 +103,24 @@ class HealthRealModel extends Equatable {
 
   @override
   List<Object?> get props => [weight, height, headCircumference, dateNow];
+}
 
+  class HealthConclusionModel extends Equatable {
+  final String statusGizi;
+  final String statusKepala;
+  // final String headCircumference;
+  // final String dateNow;
+
+  HealthConclusionModel({
+    required this.statusGizi,
+    required this.statusKepala,
+    // required this.headCircumference,
+    // required this.dateNow,
+  });
+
+  @override
+  List<Object?> get props => [statusGizi, statusKepala];
+  }
 // class HealthSaveRemoteModel extends Equatable {
 //   final String id;
 //   final String weight;
@@ -152,4 +171,3 @@ class HealthRealModel extends Equatable {
 //
 //   @override
 //   List<Object?> get props => [ weight, height, headCircumference];
-}

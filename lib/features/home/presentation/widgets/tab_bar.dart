@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutribaby_app/core/helper/helper_functions.dart';
 import 'package:nutribaby_app/core/routes/routes.dart';
 import 'package:nutribaby_app/features/authentication/presentation/cubit/auth_cubit.dart';
+import 'package:nutribaby_app/features/home/presentation/widgets/usecase.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/colors.dart';
@@ -269,139 +270,140 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Status Gizi",
-                      style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20,
-                          color: Color(0xff503F95)),
-                    ),
-                    SizedBox(height: 5),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Container(
-                        height: NHelperFunctions.screenHeight(context) * 0.13,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Color(0xff503F95)
-                            // color: Colors.white
-                            ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal:
-                                  NHelperFunctions.screenWidth(context) * 0.09),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                height: NHelperFunctions.screenHeight(context) *
-                                    0.07,
-                                width: NHelperFunctions.screenWidth(context) *
-                                    0.14,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50),
-                                    color: Color(0xff36CBD8)),
-                                child: Row(
-                                  // crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      widget.dataList.isNotEmpty
-                                          ? (widget.dataList.length - 1)
-                                              .toString()
-                                          : '0',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 23,
-                                      ),
-                                    ),
-                                    Text(
-                                      "th",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(width: 22),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Consumer<ChartDataProvider>(
-                                    builder: (context, provider, _) {
-                                      List<LineData> dataList =
-                                          provider.fetchInitial
-                                              ? widget.dataList
-                                              : dataListReversed;
-                                      return RichText(
-                                        text: TextSpan(
-                                            style: DefaultTextStyle.of(context)
-                                                .style,
-                                            children: <TextSpan>[
-                                              TextSpan(
-                                                text: dataList.isNotEmpty
-                                                    ? dataList[0]
-                                                        .sideValue
-                                                        .toString()
-                                                    : '0',
-                                                style: TextStyle(
-                                                    fontFamily: 'Poppins',
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 20,
-                                                    color: Colors.white),
-                                              ),
-                                              TextSpan(
-                                                // text: " kg",
-                                                text: "${widget.unit ?? 'N/A'}",
-                                                style: TextStyle(
-                                                    fontFamily: 'Poppins',
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 20,
-                                                    color: Colors.white),
-                                              ),
-                                            ]),
-                                      );
-                                    },
-                                  ),
-                                  BlocBuilder<AuthCubit, AuthState>(
-                                    builder: (context, state) {
-                                      if (state is AuthSuccess) {
-                                        final UserModel user = state.user;
-
-                                        return Text(
-                                            "Age ${agregateBirthdate(user.birthdate)}",
-                                            style: TextStyle(
-                                                fontFamily: 'Poppins',
-                                                fontWeight: FontWeight.w300,
-                                                fontSize: 11,
-                                                color: Colors.white),
-                                            overflow: TextOverflow
-                                                .ellipsis, // Display '...' when text overflows
-                                            maxLines:
-                                                1); // Limit to one line                                        );
-                                      } else {
-                                        return Text("Error");
-                                      }
-                                    },
-                                  ),
-                                ],
-                              ),
-                              SizedBox(width: 20),
-                              // Text(
-                              //   "Sehat",
-                              //   style: TextStyle(
-                              //       fontFamily: 'Poppins',
-                              //       fontWeight: FontWeight.w400,
-                              //       fontSize: 22,
-                              //       color: Colors.white),
-                              // ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                    // Text(
+                    //   "Status Gizi",
+                    //   style: TextStyle(
+                    //       fontFamily: 'Poppins',
+                    //       fontWeight: FontWeight.w600,
+                    //       fontSize: 20,
+                    //       color: Color(0xff503F95)),
+                    // ),
+                    // SizedBox(height: 5),
+                    // Align(
+                    //   alignment: Alignment.center,
+                    //   child: Container(
+                    //     height: NHelperFunctions.screenHeight(context) * 0.13,
+                    //     width: double.infinity,
+                    //     decoration: BoxDecoration(
+                    //         borderRadius: BorderRadius.circular(20),
+                    //         color: Color(0xff503F95)
+                    //         // color: Colors.white
+                    //         ),
+                    //     child: Padding(
+                    //       padding: EdgeInsets.symmetric(
+                    //           horizontal:
+                    //               NHelperFunctions.screenWidth(context) * 0.09),
+                    //       child: Row(
+                    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //         children: [
+                    //           Container(
+                    //             height: NHelperFunctions.screenHeight(context) *
+                    //                 0.07,
+                    //             width: NHelperFunctions.screenWidth(context) *
+                    //                 0.14,
+                    //             decoration: BoxDecoration(
+                    //                 borderRadius: BorderRadius.circular(50),
+                    //                 color: Color(0xff36CBD8)),
+                    //             child: Row(
+                    //               // crossAxisAlignment: CrossAxisAlignment.center,
+                    //               mainAxisAlignment: MainAxisAlignment.center,
+                    //               children: [
+                    //                 Text(
+                    //                   widget.dataList.isNotEmpty
+                    //                       ? (widget.dataList.length - 1)
+                    //                           .toString()
+                    //                       : '0',
+                    //                   style: TextStyle(
+                    //                     color: Colors.white,
+                    //                     fontSize: 23,
+                    //                   ),
+                    //                 ),
+                    //                 Text(
+                    //                   "th",
+                    //                   style: TextStyle(color: Colors.white),
+                    //                 ),
+                    //               ],
+                    //             ),
+                    //           ),
+                    //           SizedBox(width: 22),
+                    //           Column(
+                    //             crossAxisAlignment: CrossAxisAlignment.start,
+                    //             mainAxisAlignment: MainAxisAlignment.center,
+                    //             children: [
+                    //               Consumer<ChartDataProvider>(
+                    //                 builder: (context, provider, _) {
+                    //                   List<LineData> dataList =
+                    //                       provider.fetchInitial
+                    //                           ? widget.dataList
+                    //                           : dataListReversed;
+                    //                   return RichText(
+                    //                     text: TextSpan(
+                    //                         style: DefaultTextStyle.of(context)
+                    //                             .style,
+                    //                         children: <TextSpan>[
+                    //                           TextSpan(
+                    //                             text: dataList.isNotEmpty
+                    //                                 ? dataList[0]
+                    //                                     .sideValue
+                    //                                     .toString()
+                    //                                 : '0',
+                    //                             style: TextStyle(
+                    //                                 fontFamily: 'Poppins',
+                    //                                 fontWeight: FontWeight.w600,
+                    //                                 fontSize: 20,
+                    //                                 color: Colors.white
+                    //                             ),
+                    //                           ),
+                    //                           TextSpan(
+                    //                             // text: " kg",
+                    //                             text: "${widget.unit ?? 'N/A'}",
+                    //                             style: TextStyle(
+                    //                                 fontFamily: 'Poppins',
+                    //                                 fontWeight: FontWeight.w600,
+                    //                                 fontSize: 20,
+                    //                                 color: Colors.white),
+                    //                           ),
+                    //                         ]),
+                    //                   );
+                    //                 },
+                    //               ),
+                    //               BlocBuilder<AuthCubit, AuthState>(
+                    //                 builder: (context, state) {
+                    //                   if (state is AuthSuccess) {
+                    //                     final UserModel user = state.user;
+                    //
+                    //                     return Text(
+                    //                         "Age ${agregateBirthdate(user.birthdate)}",
+                    //                         style: TextStyle(
+                    //                             fontFamily: 'Poppins',
+                    //                             fontWeight: FontWeight.w300,
+                    //                             fontSize: 11,
+                    //                             color: Colors.white),
+                    //                         overflow: TextOverflow
+                    //                             .ellipsis, // Display '...' when text overflows
+                    //                         maxLines:
+                    //                             1); // Limit to one line                                        );
+                    //                   } else {
+                    //                     return Text("Error");
+                    //                   }
+                    //                 },
+                    //               ),
+                    //             ],
+                    //           ),
+                    //           SizedBox(width: 20),
+                    //           // Text(
+                    //           //   "Sehat",
+                    //           //   style: TextStyle(
+                    //           //       fontFamily: 'Poppins',
+                    //           //       fontWeight: FontWeight.w400,
+                    //           //       fontSize: 22,
+                    //           //       color: Colors.white),
+                    //           // ),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     SizedBox(height: 10),
                     Text(
                       "Table Data",
@@ -410,7 +412,8 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                           fontFamily: 'Poppins',
                           fontWeight: FontWeight.w500,
                           fontSize: 20,
-                          color: Color(0xff503f95)),
+                          color: Color(0xff503f95)
+                      ),
                     ),
                     SizedBox(height: 10),
                     Container(
@@ -439,7 +442,7 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                                   alignment: Alignment.centerLeft,
                                   child: Text(''),
                                 ),
-                                size: ColumnSize.S,
+                                size: ColumnSize.M,
                               ),
                             ],
                             // rows: provider.fetchInitial ? dataListReversed
@@ -457,6 +460,12 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                                                 icon: Icon(Icons.edit),
                                                 onPressed: () {
                                                   _showEditDialog(lineData);
+                                                },
+                                              ),
+                                              IconButton(
+                                                icon: Icon(Icons.delete),
+                                                onPressed: () async {
+                                                  _showDeleteDialog(lineData);
                                                 },
                                               ),
                                             ],
@@ -546,16 +555,52 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
           actions: [
             TextButton(
               onPressed: () async {
-                // Update lineData with new values
                 lineData.sideValue = double.parse(sideValueController.text);
-                // Close the dialog
                 AppRouter.router.pop();
-                //WARNING: No State Management Update, just right on from data source :)
-                await HealthService()
-                    .updateHealthData(widget.labelUpdateTable, lineData);
+                await HealthService().updateHealthData(widget.labelUpdateTable, lineData);
                 setState(() {});
               },
               child: Text('Save'),
+            ),
+            TextButton(
+              onPressed: () {
+                AppRouter.router.pop();
+              },
+              child: Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showDeleteDialog(LineData lineData) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: Text('Delete Data'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+
+              SizedBox(height: 20),
+              Text(
+                'Apakah Anda yakin untuk menghapus seluruh data pada tanggal :\n ${DateFormat('EEE, dd-MM-yyyy').format(lineData.date)}',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                await HealthService().deleteHealthData(lineData);
+                AppRouter.router.pop();
+                UsecaseWidget().refreshScreen(context); // Use the singleton instance
+              },
+              child: Text('Ok'),
             ),
             TextButton(
               onPressed: () {

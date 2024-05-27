@@ -86,9 +86,9 @@ class _ChartScreenState extends State<ChartScreen> {
                             return TabBarView(
                               physics: NeverScrollableScrollPhysics(),
                               children: [
-                                FCategoryTab(labelUpdateTable: 'weight',dataList: weightDataList, labelTable: "Berat", unit: "kg", restorationId: 'main'),
-                                FCategoryTab(labelUpdateTable: 'height',dataList: heightDataList, labelTable: "Tinggi", unit: "cm", restorationId: 'main'),
-                                FCategoryTab(labelUpdateTable:'headCircumference',dataList: headCircumferenceDataList, labelTable: "LingkarKepala", unit: "cm", restorationId: 'main'),
+                                FCategoryTab(labelUpdateTable: 'weight',dataList: weightDataList, labelTable: "Berat", unit: " kg", restorationId: 'main'),
+                                FCategoryTab(labelUpdateTable: 'height',dataList: heightDataList, labelTable: "Tinggi", unit: " cm", restorationId: 'main'),
+                                FCategoryTab(labelUpdateTable:'headCircumference',dataList: headCircumferenceDataList, labelTable: "LingkarKepala", unit: " cm", restorationId: 'main'),
                                 ConclusionScreen(weightTrends: weightTrend, heightTrends: heightTrend, headCircumferenceTrends: headCircumferenceTrend),
                               ],
                             );
@@ -123,9 +123,9 @@ class _ChartScreenState extends State<ChartScreen> {
                             return TabBarView(
                               physics: NeverScrollableScrollPhysics(),
                               children: [
-                                FCategoryTab(labelUpdateTable: 'weight',dataList: weightDataList, labelTable: "Berat", unit: "kg", restorationId: 'main'),
-                                FCategoryTab(labelUpdateTable: 'height',dataList: heightDataList, labelTable: "Tinggi", unit: "cm", restorationId: 'main'),
-                                FCategoryTab(labelUpdateTable:'headCircumference',dataList: headCircumferenceDataList, labelTable: "LingkarKepala", unit: "cm", restorationId: 'main'),
+                                FCategoryTab(labelUpdateTable: 'weight',dataList: weightDataList, labelTable: "Berat", unit: " kg", restorationId: 'main'),
+                                FCategoryTab(labelUpdateTable: 'height',dataList: heightDataList, labelTable: "Tinggi", unit: " cm", restorationId: 'main'),
+                                FCategoryTab(labelUpdateTable:'headCircumference',dataList: headCircumferenceDataList, labelTable: "LingkarKepala", unit: " cm", restorationId: 'main'),
                                 ConclusionScreen(weightTrends: weightTrend, heightTrends: heightTrend, headCircumferenceTrends: headCircumferenceTrend),
                               ],
                             );
@@ -139,8 +139,8 @@ class _ChartScreenState extends State<ChartScreen> {
                                   actions: [
                                     TextButton(
                                       onPressed: () {
-                                        AppRouter.router.pop();
                                         provider.setFetchInitial(true);
+                                        AppRouter.router.pop();
                                         provider.setShowingChart(false);
                                         _refreshScreen(context);
                                       },
@@ -151,11 +151,15 @@ class _ChartScreenState extends State<ChartScreen> {
                               );
                             });
                           }
-                          return Container(); // Show loading indicator
+                          return SingleChildScrollView(
+                              child: Container(
+                                width: double.infinity,
+                                  height: 1000,
+                                  child: LoadingScreen())); // Show loading indicator
                         },
                       );
                     }
-                    return LoadingScreen(); // Default loading screen
+                    return const LoadingScreen(); // Default loading screen
                   },
                 ),
               ),

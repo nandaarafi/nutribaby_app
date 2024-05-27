@@ -41,7 +41,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController emailController = TextEditingController(text: '');
 
   final TextEditingController passwordController = TextEditingController(text: '');
-  final TextEditingController dateNowController = TextEditingController(text: '');
+  final TextEditingController dateNowController = TextEditingController(text: DateFormat('dd-MM-yyyy').format(DateTime.now()));
   final TextEditingController dateBirthController = TextEditingController(text: '');
   final TextEditingController beratController = TextEditingController(text: '');
   final TextEditingController tinggiController = TextEditingController(text: '');
@@ -123,13 +123,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
           controller: dateNowController,
         );
       }
+
       Widget BeratInput() {
         return CustomTextFormFieldSuffix(
           title: 'Berat',
           hintText: 'Masukan Berat',
           controller: beratController,
           suffixText: 'kg',
-          widthSuffix: 50,
+          widthSuffix: NHelperFunctions.screenWidth(context) * 0.7,
         );
       }
 
@@ -139,7 +140,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           hintText: 'Masukan Tinggi',
           controller: tinggiController,
           suffixText: 'cm',
-          widthSuffix: 58,
+          widthSuffix: NHelperFunctions.screenWidth(context) * 0.7,
         );
       }
       Widget LingkarKepalaInput() {
@@ -148,7 +149,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           hintText: 'Masukan Lingkar Kepala',
           controller: lingkarKepalaController,
           suffixText: 'mm',
-          widthSuffix: 65,
+          widthSuffix: NHelperFunctions.screenWidth(context) * 0.7,
         );
       }
 
@@ -288,9 +289,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
       }
       Widget submitButton() {
         return BlocConsumer<AuthCubit, AuthState>(
-          listener: (context, state) {
-            if (state is AuthSuccess) {
-              context.read<HealthCubit>().addData(
+          listener: (context, state) async {
+            if (state is AuthSuccess)  {
+              await context.read<HealthCubit>().addData(
                   height: double.parse(tinggiController.text),
                   weight: double.parse(beratController.text),
                   headCircumference: double.parse(lingkarKepalaController.text),
@@ -305,7 +306,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     TextButton(
                       onPressed: () {
                         AppRouter.router.pop();
-                        AppRouter.router.go('/add');
+                        AppRouter.router.go(Routes.addNamedPage);
                       },
                       child: Text("OK"),
                     ),
@@ -340,10 +341,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
             return CustomButton(
               title: 'Daftar',
-
               margin: EdgeInsets.only(top: 30),
               onPressed: () {
-
                 if (emailController.text.isEmpty ||
                     passwordController.text.isEmpty ||
                     parentNameController.text.isEmpty ||
@@ -416,7 +415,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             TinggiInput(),
             LingkarKepalaInput(),
             dateInput(),
-            GetButton(),
+            // GetButton(),
             submitButton(),
           ],
         ),

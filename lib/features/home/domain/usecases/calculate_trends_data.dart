@@ -71,7 +71,8 @@ class UsecaseModel{
     double initialData = firstData.sideValue;
     double finalData = lastData.sideValue;
 
-    double percentageChange = ((finalData - initialData) / initialData) * 100;
+    double percentageChange = ((finalData - initialData));
+    // double percentageChange = ((finalData - initialData) / initialData) * 100;
     double roundedResult = double.parse(percentageChange.toStringAsFixed(2));
 
     return roundedResult;
@@ -92,7 +93,7 @@ class UsecaseModel{
     double initialData = firstData.sideValue;
     double finalData = lastData.sideValue;
 
-    double percentageChange = ((finalData - initialData) / initialData) * 100;
+    double percentageChange = ((finalData - initialData));
     double roundedResult = double.parse(percentageChange.toStringAsFixed(2));
 
     return roundedResult;

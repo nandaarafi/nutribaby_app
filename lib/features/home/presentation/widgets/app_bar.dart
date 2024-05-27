@@ -195,3 +195,22 @@ class AppBarBack extends StatelessWidget  implements PreferredSizeWidget {
     );
   }
 }
+
+class AppBarDefault extends StatelessWidget implements PreferredSizeWidget {
+  final String title;
+
+  const AppBarDefault({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
+
+  @override
+  Size get preferredSize => const Size.fromHeight(60);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      title: Text(title),
+    );
+  }
+}

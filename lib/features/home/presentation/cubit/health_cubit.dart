@@ -20,13 +20,19 @@ class HealthCubit extends Cubit<HealthState> {
     try {
       emit(HealthLoading());
 
-      bool hasDataForToday = await HealthService().hasDataForToday(dateTime!);
+      String? hasDataForToday = await HealthService().hasDataForToday(dateTime!);
 
-      if (hasDataForToday) {
-        emit(HealthFailed("Health data for today already exists."));
+      if (hasDataForToday != null) {
+        HealthService().updateAllHealthData(documentId: hasDataForToday,
+            weight: weight,
+            height: height,
+            headCircumference: headCircumference,
+            dateTime: dateTime
+        );
+        emit(HealthAddedSuccess());
+      //   emit(HealthFailed("Health data for today already exists."));
       } else {
         await HealthService().addData(
-          // id: id,
           weight: weight,
           height: height,
           headCircumference: headCircumference,

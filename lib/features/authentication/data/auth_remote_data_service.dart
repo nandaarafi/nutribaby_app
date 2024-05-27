@@ -2,8 +2,7 @@ import 'package:nutribaby_app/features/authentication/model/auth_data_model.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserService {
-  CollectionReference _userReference =
-  FirebaseFirestore.instance.collection('users');
+  CollectionReference _userReference = FirebaseFirestore.instance.collection('users');
 
   Future<void> setUser(UserModel user) async {
     try {

@@ -21,7 +21,7 @@ class HealthRealtimeSuccess extends HealthRealtimeState {
   List<Object> get props => [healthReal];
 }
 class HealthRealtimeConclusionSucces extends HealthRealtimeState {
-  final String healthReal;
+  final List<HealthConclusionModel> healthReal;
 
   HealthRealtimeConclusionSucces(this.healthReal);
 

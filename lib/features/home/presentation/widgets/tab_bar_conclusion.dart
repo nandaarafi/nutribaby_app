@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutribaby_app/core/constants/colors.dart';
 import 'package:nutribaby_app/core/helper/helper_functions.dart';
+import 'package:nutribaby_app/features/home/domain/health_data_model.dart';
 import 'package:nutribaby_app/features/home/presentation/cubit/health_realtime_cubit.dart';
 import 'package:provider/provider.dart';
 
@@ -46,6 +47,9 @@ class _ConclusionScreenState extends State<ConclusionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController statusGiziController = TextEditingController(text: '');
+    TextEditingController statusKepalaController = TextEditingController(text: '');
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -72,7 +76,7 @@ class _ConclusionScreenState extends State<ConclusionScreen> {
                       trendState: trendStateProvider.weightTrendState,
                       title: "Berat",
                       subtitle: "Berat anda ",
-                      trendsText: widget.weightTrends.toString());
+                      trendsText: widget.weightTrends.toString() + " kg");
                 }),
                 Consumer<TrendStateProvider>(
                     builder: (context, trendStateProvider, _) {
@@ -80,7 +84,7 @@ class _ConclusionScreenState extends State<ConclusionScreen> {
                       trendState: trendStateProvider.heightTrendState,
                       title: "Tinggi",
                       subtitle: "Tinggi anda ",
-                      trendsText: widget.heightTrends.toString());
+                      trendsText: widget.heightTrends.toString() + " cm");
                 }),
               ],
             ),
@@ -93,24 +97,26 @@ class _ConclusionScreenState extends State<ConclusionScreen> {
                     title: "Lingkar Kepala",
                     subtitle: "Lingkar Kepala anda ",
                     widthScreen: NHelperFunctions.screenWidth(context) * 0.6,
-                    trendsText: widget.headCircumferenceTrends.toString());
+                    trendsText: widget.headCircumferenceTrends.toString() + " cm");
               }),
             ),
             SizedBox(height: 15),
-            Text(
-              "Fuzzy",
-              textAlign: TextAlign.start,
-              style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20,
-                  color: Color(0xff503F95)),
-            ),
-            Center(
+            // Text(
+            //   "Fuzzy",
+            //   textAlign: TextAlign.start,
+            //   style: TextStyle(
+            //       fontFamily: 'Poppins',
+            //       fontWeight: FontWeight.w600,
+            //       fontSize: 20,
+            //       color: Color(0xff503F95)),
+            // ),
+            Container(
+              width: double.infinity,
+              height: NHelperFunctions.screenHeight(context) * 0.20,
               child: BlocConsumer<HealthRealtimeCubit, HealthRealtimeState>(
                 listener: (context, state) {
                   if (state is HealthRealtimeConclusionSucces) {
-                      print("Succes");
+                      // print("Succes");
                   } else if (state is HealthRealtimeFailed) {
                     print("Failed");
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -134,57 +140,134 @@ class _ConclusionScreenState extends State<ConclusionScreen> {
                       ),
                     );
                   } else if (state is HealthRealtimeConclusionSucces) {
-                    String conclusion = state.healthReal; // Extract conclusion
-                    return Container(
-                      width: NHelperFunctions.screenWidth(context) * 0.4,
-                      height: NHelperFunctions.screenHeight(context) * 0.13,
-                      padding: EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                        color: Color(0xff503F95), // Set the background color
-                        borderRadius:
-                        BorderRadius.circular(20), // Set the border radius
-                      ),
-                      child: Column(
-                        children: [
-                          Row(
+                    String statusGizi ="";
+                    String statusKepala ="";
+                    for (var healthRealModel in state.healthReal) {
+                      statusGiziController.text = healthRealModel.statusGizi;
+                      statusKepalaController.text = healthRealModel.statusKepala;
+                      // print(statusKepala);
+                    }
+                    // List<HealthConclusionModel> conclusion = state.healthReal; // Extract conclusion
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: NHelperFunctions.screenWidth(context) * 0.4,
+                          height: NHelperFunctions.screenHeight(context) * 0.13,
+                          padding: EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                            color: Color(0xff503F95), // Set the background color
+                            borderRadius:
+                            BorderRadius.circular(20), // Set the border radius
+                          ),
+                          child: Column(
                             children: [
-                              // Icon(Icons.abc),
-                              SizedBox(width: 15),
-                              Text(
-                                "Fuzzy",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  // Icon(Icons.abc),
+                                  // SizedBox(width: 15),
+                                  Text(
+                                    "Status",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 15),
+                              RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    // fontSize: 16.0,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: statusGiziController.text,
+                                      // text: "Mikrosefali + Normal",
+                                        style: TextStyle(
+                                            fontFamily: 'Poppins',
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 17,
+                                            color: Colors.white
+                                        ),
+                                    ),
+                                    // TextSpan(text: subtitle),
+                                    // TextSpan(
+                                    //   text: (widget.trendState ?? false) ? "naik" : "turun",
+                                    //   style: TextStyle(
+                                    //   ),
+                                    // ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(height: 15),
-                          RichText(
-                            text: TextSpan(
-                              style: TextStyle(
-                                color: Colors.white,
-                                // fontSize: 16.0,
-                              ),
-                              children: <TextSpan>[
-                                TextSpan(
-                                  text: "$conclusion",
-                                  // text: "Mikrosefali + Normal",
-                                  style: TextStyle(),
-                                ),
-                                // TextSpan(text: subtitle),
-                                // TextSpan(
-                                //   text: (widget.trendState ?? false) ? "naik" : "turun",
-                                //   style: TextStyle(
-                                //   ),
-                                // ),
-                              ],
-                            ),
+                        ),
+                        Container(
+                          width: NHelperFunctions.screenWidth(context) * 0.4,
+                          height: NHelperFunctions.screenHeight(context) * 0.13,
+                          padding: EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                            color: Color(0xff503F95), // Set the background color
+                            borderRadius:
+                            BorderRadius.circular(20), // Set the border radius
                           ),
-                        ],
-                      ),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  // Icon(Icons.abc),
+                                  // SizedBox(width: 15),
+                                  Text(
+                                    "Status",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 15),
+                              RichText(
+                                text: TextSpan(
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    // fontSize: 16.0,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: statusKepalaController.text,
+                                      // text: "Mikrosefali + Normal",
+                                      style: TextStyle(
+                                          fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 17,
+                                          color: Colors.white
+                                      ),
+                                    ),
+                                    // TextSpan(text: subtitle),
+                                    // TextSpan(
+                                    //   text: (widget.trendState ?? false) ? "naik" : "turun",
+                                    //   style: TextStyle(
+                                    //   ),
+                                    // ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     );
+                  }
+                  else if (state is HealthRealtimeFailed){
+                    return Container();
                   }
                   return Container();
                 },

@@ -99,7 +99,7 @@ class _CustomContainerConclusionState extends State<CustomContainerConclusion> {
                       size: 15,
                     ),
                     Text(
-                      " ${widget.trendsText} %",
+                      " ${widget.trendsText}",
                       style: TextStyle(
                           // color: Colors.white
                           ),

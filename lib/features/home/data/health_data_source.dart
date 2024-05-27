@@ -11,23 +11,27 @@ class HealthService {
   final DatabaseReference _healthRealRef = FirebaseDatabase.instance.ref().child('${FirebaseAuth.instance.currentUser!.uid}');
 
 
-  Future<bool> hasDataForToday(DateTime currentDate) async {
-    DateTime today = currentDate;
-    DateTime todayStart = DateTime(today.year, today.month, today.day);
+  Future<String?> hasDataForToday(DateTime currentDate) async {
+    DateTime todayStart = DateTime(currentDate.year, currentDate.month, currentDate.day);
     DateTime todayEnd = todayStart.add(Duration(days: 1));
 
     QuerySnapshot snapshot = await _healthReference
         .doc(_auth.currentUser!.uid)
-        .collection('health') // Replace with your collection name
+        .collection('health')
         .where('dateTime', isGreaterThanOrEqualTo: todayStart)
         .where('dateTime', isLessThan: todayEnd)
         .get();
 
-    return snapshot.docs.isNotEmpty;
+    if (snapshot.docs.isNotEmpty) {
+      // Return the document ID of the first (and presumably only) matching document
+      return snapshot.docs.first.id;
+    } else {
+      // No document found for today
+      return null;
+    }
   }
 
   Future<void> addData({
-
     required double weight,
     required double height,
     required double headCircumference,
@@ -63,6 +67,46 @@ class HealthService {
         'dateTime': timestamp,
         // Add more fields to update as needed
       });
+    } catch (e){
+      throw(e);
+    }
+  }
+
+  Future<void> updateAllHealthData(
+      {
+        required String documentId,
+        required double weight,
+        required double height,
+        required double headCircumference,
+        DateTime? dateTime, // Use DateTime? to allow nullable values
+      }
+      ) async{
+    try{
+      var collection = FirebaseFirestore.instance
+          .collection('users')
+          .doc(_auth.currentUser!.uid)
+          .collection('health');
+      Timestamp timestamp = Timestamp.fromDate(dateTime!);
+
+      await collection.doc(documentId).update({
+        'weight': weight,
+        'height': height,
+        'headCircumference': headCircumference,
+        'dateTime': timestamp,
+        // Add more fields to update as needed
+      });
+    } catch (e){
+      throw(e);
+    }
+  }
+
+  Future<void> deleteHealthData(LineData lineData) async{
+    try{
+      var collection = FirebaseFirestore.instance
+          .collection('users')
+          .doc(_auth.currentUser!.uid)
+          .collection('health');
+      await collection.doc(lineData.documentId).delete();
     } catch (e){
       throw(e);
     }
@@ -166,7 +210,6 @@ class HealthService {
       String dataType) {
     List<LineData> lineDataList = healthData[dataType]?.map((entry) {
       return LineData(
-
         documentId: entry[0] as String,
         sideValue: entry[1] as double,
         date: entry[2] as DateTime,
@@ -212,25 +255,23 @@ class HealthService {
     await FirebaseAuth.instance.signOut();
   }
 
-  Future<String?> fetchRealtimeConclusion() async {
+  Future<List<HealthConclusionModel>> fetchRealtimeConclusion() async {
     try {
-      final data = await _healthRealRef.child('status-kesimpulan').get();
-
-      if (data.exists) {
-        if (data.value is String) {
-          String value = data.value as String;
-          return value;
-        } else {
-          print("Error: Unexpected data type for 'weight'");
-          return null;
-        }
+      final statusGizi = await _healthRealRef.child('status-gizi').get();
+      final statusKepala = await _healthRealRef.child('status-kepala').get();
+      if (statusGizi.exists && statusKepala.exists) {
+        final List<HealthConclusionModel> healthDataList = [
+          HealthConclusionModel(
+              statusGizi: '${statusGizi.value}' ,// Add 'kg' as a unit
+              statusKepala: '${statusKepala.value}',
+          )];
+        return healthDataList;
       } else {
-        print("Error: Data does not exist at 'weight'");
-        return null;
+        return [];
       }
     } catch (e) {
-      print("Error getting data: $e");
-      return null;
+      print('Error fetching realtime conclusion: $e');
+      throw Exception('Failed to fetch realtime conclusion');
     }
   }
 
