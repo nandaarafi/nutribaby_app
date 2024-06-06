@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutribaby_app/core/helper/helper_functions.dart';
 import 'package:nutribaby_app/core/routes/routes.dart';
-import 'package:nutribaby_app/features/authentication/presentation/cubit/auth_cubit.dart';
 import 'package:nutribaby_app/features/authentication/presentation/widgets/custom_button.dart';
 import 'package:nutribaby_app/features/home/presentation/cubit/health_cubit.dart';
 import 'package:nutribaby_app/features/home/presentation/widgets/usecase.dart';
@@ -13,14 +12,11 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/colors.dart';
-import '../../../authentication/model/auth_data_model.dart';
 import '../../../authentication/presentation/widgets/custom_date_picker.dart';
 import '../../data/health_data_source.dart';
 import '../../domain/health_data_model.dart';
 import '../cubit/health_chart_data_cubit.dart';
-import '../cubit/utils.dart';
 import '../provider/chart_controller.dart';
-import '../screen/loading_screen.dart';
 import 'custon_line_chart.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:intl/intl.dart';
@@ -499,7 +495,7 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                                         builder: (BuildContext context) {
                                           return AlertDialog(
                                             title: Text("Export Successful"),
-                                            content: Text("Data exported successfully in Download/health_data.csv"),
+                                            content: Text("Data exported successfully in Download/user/health_data.csv"),
                                             actions: [
                                               TextButton(
                                                 onPressed: () {

@@ -27,7 +27,11 @@ Future<void> saveToCsv(Map<String, List<LineData>> healthData) async {
 
   String csv = const ListToCsvConverter().convert(rows);
 
-  final directory = Directory('/storage/emulated/0/Download');
+  final directory = Directory('/storage/emulated/0/Download/user');
+  if (!await directory.exists()) {
+    // If the directory doesn't exist, create it
+    await directory.create(recursive: true);
+  }
   final path = '${directory.path}/health_data.csv';
   final file = File(path);
 

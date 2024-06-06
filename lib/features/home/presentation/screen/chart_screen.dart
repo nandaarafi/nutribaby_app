@@ -6,8 +6,6 @@ import 'package:nutribaby_app/features/home/presentation/screen/loading_screen.d
 import 'package:nutribaby_app/features/home/presentation/widgets/tab_bar_conclusion.dart';
 import 'package:provider/provider.dart';
 
-
-
 import '../../../../core/constants/colors.dart';
 
 import '../../../../core/routes/constants.dart';
@@ -18,9 +16,6 @@ import '../provider/chart_controller.dart';
 import '../widgets/app_bar.dart';
 
 import '../widgets/tab_bar.dart';
-
-
-
 
 
 class ChartScreen extends StatefulWidget {
@@ -42,7 +37,6 @@ class _ChartScreenState extends State<ChartScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return PopScope(
       canPop: false,
       child: DefaultTabController(

@@ -30,84 +30,86 @@ class CustomContainerConclusion extends StatefulWidget {
 class _CustomContainerConclusionState extends State<CustomContainerConclusion> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: widget.widthScreen ?? NHelperFunctions.screenWidth(context) * 0.4,
-      height: NHelperFunctions.screenHeight(context) * 0.2,
-      padding: EdgeInsets.all(15),
-      decoration: BoxDecoration(
-        color: Color(0xff503F95), // Set the background color
-        borderRadius: BorderRadius.circular(20), // Set the border radius
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              // Icon(Icons.abc),
-              SizedBox(width: 15),
-              Text(
-                widget.title,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 15),
-          RichText(
-            text: TextSpan(
-              style: TextStyle(
-                color: Colors.white,
-                // fontSize: 16.0,
-              ),
-              children: <TextSpan>[
-                TextSpan(
-                  text: widget.subtitle,
+    return SingleChildScrollView(
+      child: Container(
+        width: widget.widthScreen ?? NHelperFunctions.screenWidth(context) * 0.4,
+        height: NHelperFunctions.screenHeight(context) * 0.2,
+        padding: EdgeInsets.all(15),
+        decoration: BoxDecoration(
+          color: Color(0xff503F95), // Set the background color
+          borderRadius: BorderRadius.circular(20), // Set the border radius
+        ),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                // Icon(Icons.abc),
+                SizedBox(width: 15),
+                Text(
+                  widget.title,
                   style: TextStyle(
-                  ),
-                ),
-                // TextSpan(text: subtitle),
-                TextSpan(
-                  text: (widget.trendState ?? false) ? "naik" : "turun",
-                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
                   ),
                 ),
               ],
             ),
-          ),
-
-          SizedBox(height: 15),
-              Container(
-                width: NHelperFunctions.screenWidth(context) * 0.5,
-                height: NHelperFunctions.screenHeight(context) * 0.05,
-                padding: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  color: (widget.trendState ?? false) ? Color(0xff36CBD8) : Colors.redAccent, // Set the background color
-                  borderRadius:
-                      BorderRadius.circular(10), // Set the border radius
+            SizedBox(height: 15),
+            RichText(
+              text: TextSpan(
+                style: TextStyle(
+                  color: Colors.white,
+                  // fontSize: 16.0,
                 ),
-                child: Center(
-                    child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      (widget.trendState ?? false)
-                          ? Icons.arrow_upward
-                          : Icons.arrow_downward,
-                      // color: Colors.white,
-                      size: 15,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: widget.subtitle,
+                    style: TextStyle(
                     ),
-                    Text(
-                      " ${widget.trendsText}",
-                      style: TextStyle(
-                          // color: Colors.white
-                          ),
+                  ),
+                  // TextSpan(text: subtitle),
+                  TextSpan(
+                    text: (widget.trendState ?? false) ? "naik" : "turun",
+                    style: TextStyle(
                     ),
-                  ],
-                )),
+                  ),
+                ],
               ),
-        ],
+            ),
+      
+            SizedBox(height: 15),
+                Container(
+                  width: NHelperFunctions.screenWidth(context) * 0.5,
+                  height: NHelperFunctions.screenHeight(context) * 0.05,
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: (widget.trendState ?? false) ? Color(0xff36CBD8) : Colors.redAccent, // Set the background color
+                    borderRadius:
+                        BorderRadius.circular(10), // Set the border radius
+                  ),
+                  child: Center(
+                      child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        (widget.trendState ?? false)
+                            ? Icons.arrow_upward
+                            : Icons.arrow_downward,
+                        // color: Colors.white,
+                        size: 15,
+                      ),
+                      Text(
+                        " ${widget.trendsText}",
+                        style: TextStyle(
+                            // color: Colors.white
+                            ),
+                      ),
+                    ],
+                  )),
+                ),
+          ],
+        ),
       ),
     );
   }

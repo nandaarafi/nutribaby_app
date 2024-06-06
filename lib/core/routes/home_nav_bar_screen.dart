@@ -6,9 +6,9 @@ import 'package:ficonsax/ficonsax.dart';
 import 'package:nutribaby_app/core/constants/colors.dart';
 
 
-class ScaffoldWithNavBar extends StatelessWidget {
+class HomeScaffoldWithNavBar extends StatelessWidget {
   /// Constructs an [ScaffoldWithNavBar].
-  const ScaffoldWithNavBar({
+  const HomeScaffoldWithNavBar({
     required this.child,
     super.key,
   });

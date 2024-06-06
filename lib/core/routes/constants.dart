@@ -8,6 +8,7 @@ class Routes{
   static const rootLogin = '/';
   static const signInNamedPage = '/sign-in';
   static const signUpNamedPage = '/sign-up';
+  static const signUpUserDataNamedPage = '/data';
   static const addNamedPage = '/add';
   static const homeChartPage = '/grafik';
   static const profileNamedPage = '/profile';

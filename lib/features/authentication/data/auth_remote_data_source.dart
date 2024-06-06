@@ -1,7 +1,7 @@
 import 'package:nutribaby_app/features/authentication/model/auth_data_model.dart';
 import 'package:nutribaby_app/features/authentication/data/auth_remote_data_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:nutribaby_app/core/errors/exceptions.dart';
+
 
 class AuthService {
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -52,8 +52,6 @@ class AuthService {
         role: 'user',
         birthdate: birthdate,
         gender: gender
-        // hobby: hobby,
-        // balance: 280000000,
       );
 
       await UserService().setUser(user);
@@ -63,24 +61,7 @@ class AuthService {
       throw (e);
     }
   }
-  // Future<dynamic> signInWithGoogle() async {
-  //   try {
-  //     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-  //
-  //     final GoogleSignInAuthentication? googleAuth =
-  //     await googleUser?.authentication;
-  //
-  //     final credential = GoogleAuthProvider.credential(
-  //       accessToken: googleAuth?.accessToken,
-  //       idToken: googleAuth?.idToken,
-  //     );
-  //
-  //     return await FirebaseAuth.instance.signInWithCredential(credential);
-  //   } on Exception catch (e) {
-  //     // TODO
-  //     print('exception->$e');
-  //   }
-  // }
+
 
   Future<bool> signOutFromGoogle() async {
     try {

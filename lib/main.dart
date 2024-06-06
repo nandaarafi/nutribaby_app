@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutribaby_app/core/routes/routes.dart';
+import 'package:nutribaby_app/features/authentication/presentation/cubit/user_data_cubit.dart';
 import 'package:nutribaby_app/features/authentication/presentation/provider/date_picker.dart';
 import 'package:nutribaby_app/features/home/presentation/cubit/health_cubit.dart';
 import 'package:nutribaby_app/features/home/presentation/cubit/health_realtime_cubit.dart';
@@ -44,16 +45,11 @@ class MyApp extends StatelessWidget {
     ]);
     return MultiBlocProvider(
         providers: [
-          BlocProvider(
-        create: (context) => AuthCubit(),
-          ),
-          BlocProvider(
-            create: (context) => HealthRealtimeCubit(),
-          ), BlocProvider(
-            create: (context) => HealthCubit(),
-          ),BlocProvider(
-            create: (context) => HealthChartDataCubit(),
-          ),
+          BlocProvider(create: (context) => AuthCubit()),
+          BlocProvider(create: (context) => HealthRealtimeCubit()),
+          BlocProvider(create: (context) => HealthCubit()),
+          BlocProvider(create: (context) => HealthChartDataCubit()),
+          BlocProvider(create: (context) => UserDataCubit()),
         // ], child: MaterialApp(
         ], child: MaterialApp.router(
       debugShowCheckedModeBanner: false,
