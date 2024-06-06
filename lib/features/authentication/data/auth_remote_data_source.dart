@@ -63,7 +63,33 @@ class AuthService {
       throw (e);
     }
   }
+  // Future<dynamic> signInWithGoogle() async {
+  //   try {
+  //     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  //
+  //     final GoogleSignInAuthentication? googleAuth =
+  //     await googleUser?.authentication;
+  //
+  //     final credential = GoogleAuthProvider.credential(
+  //       accessToken: googleAuth?.accessToken,
+  //       idToken: googleAuth?.idToken,
+  //     );
+  //
+  //     return await FirebaseAuth.instance.signInWithCredential(credential);
+  //   } on Exception catch (e) {
+  //     // TODO
+  //     print('exception->$e');
+  //   }
+  // }
 
+  Future<bool> signOutFromGoogle() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      return true;
+    } on Exception catch (_) {
+      return false;
+    }
+  }
   Future<void> signOut() async {
     try {
       await _auth.signOut();

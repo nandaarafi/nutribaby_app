@@ -7,6 +7,7 @@ import 'package:nutribaby_app/features/home/presentation/widgets/tab_bar_conclus
 import 'package:provider/provider.dart';
 
 
+
 import '../../../../core/constants/colors.dart';
 
 import '../../../../core/routes/constants.dart';
@@ -17,6 +18,9 @@ import '../provider/chart_controller.dart';
 import '../widgets/app_bar.dart';
 
 import '../widgets/tab_bar.dart';
+
+
+
 
 
 class ChartScreen extends StatefulWidget {
@@ -71,6 +75,7 @@ class _ChartScreenState extends State<ChartScreen> {
                       return BlocBuilder<HealthCubit, HealthState>(
                         builder: (context, state) {
                           if (state is HealthSuccess) {
+                            print(state.health);
                             List<LineData> weightDataList = state.health['weight'] ?? [];
                             List<LineData> heightDataList = state.health['height'] ?? [];
                             List<LineData> headCircumferenceDataList = state.health['headCircumference'] ?? [];
@@ -100,20 +105,18 @@ class _ChartScreenState extends State<ChartScreen> {
                               ),
                             );
                           }
-                          return Container(); // Return default container
+                          return Container();
                         },
                       );
                     } else if (provider.showingChart) {
                       return BlocBuilder<HealthChartDataCubit, HealthChartDataState>(
                         builder: (context, state) {
                           if (state is HealthNewSuccess) {
+                            // print(state.health);
                             List<LineData> weightDataList = state.health['weight'] ?? [];
                             List<LineData> heightDataList = state.health['height'] ?? [];
                             List<LineData> headCircumferenceDataList = state.health['headCircumference'] ?? [];
 
-                            print("Weight Data List: $weightDataList");
-                            print("Height Data List: $heightDataList");
-                            print("Head Circumference Data List: $headCircumferenceDataList");
 
                             double weightTrend = UsecaseModel().calculateTrendPercentage(weightDataList);
                             double heightTrend = UsecaseModel().calculateTrendPercentage(heightDataList);
@@ -169,6 +172,8 @@ class _ChartScreenState extends State<ChartScreen> {
       ),
     );
   }
+
+
 
   void _refreshScreen(BuildContext context) {
     WidgetsBinding.instance!.addPostFrameCallback((_) {

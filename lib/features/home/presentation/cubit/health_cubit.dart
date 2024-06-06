@@ -1,6 +1,7 @@
 import 'package:nutribaby_app/features/home/data/health_data_source.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:nutribaby_app/features/home/presentation/cubit/utils.dart';
 
 import '../../domain/health_data_model.dart';
 
@@ -67,6 +68,23 @@ class HealthCubit extends Cubit<HealthState> {
       }));
     } catch (e) {
       emit(HealthFailed(e.toString()));
+    }
+  }
+
+  void exportInitialDataToCsv() {
+    if (state is HealthSuccess) {
+      final currentState = state as HealthSuccess;
+
+      List<LineData> weightDataList = currentState.health['weight'] ?? [];
+      List<LineData> heightDataList = currentState.health['height'] ?? [];
+      List<LineData> headCircumferenceDataList = currentState.health['headCircumference'] ?? [];
+
+      Map<String, List<LineData>> healthData = {
+        'weight': weightDataList,
+        'height': heightDataList,
+        'headCircumference': headCircumferenceDataList,
+      };
+      saveToCsv(healthData);
     }
   }
 

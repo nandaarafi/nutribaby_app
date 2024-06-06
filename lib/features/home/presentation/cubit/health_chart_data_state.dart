@@ -15,11 +15,7 @@ class HealthAddedSuccess extends HealthChartDataState {}
 
 class HealthNewSuccess extends HealthChartDataState {
   final Map<String, List<LineData>> health;
-  // final bool showErrorSnackbar;
-
-
-
-  HealthNewSuccess(this.health/*, this.showErrorSnackbar*/);
+  HealthNewSuccess(this.health);
 
   @override
   List<Object> get props => [ health];

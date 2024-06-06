@@ -1,12 +1,17 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutribaby_app/core/helper/helper_functions.dart';
 import 'package:nutribaby_app/core/routes/constants.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/routes/routes.dart';
+import '../../data/auth_remote_data_source.dart';
 import '../cubit/auth_cubit.dart';
 import '../provider/password_vis_provider.dart';
 import '../widgets/custom_button.dart';
@@ -21,10 +26,60 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  User? _user;
+  // ValueNotifier userCredential = ValueNotifier('');
+
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
+  List<Permission> statuses = [
+    Permission.storage,
+  ];
+  Future<void> requestPermission() async {
+    try {
+      for (var element in statuses) {
+        if ((await element.status.isDenied ||
+            await element.status.isPermanentlyDenied)) {
+          await statuses.request();
+        }
+      }
+    } catch (e) {
+      // debugPrint('$e');
+    } finally {
+      await requestPermission();
+    }
+  }
+  void test() async {
+    final plugin = DeviceInfoPlugin();
+    final android = await plugin.androidInfo;
+
+    final storageStatus = android.version.sdkInt < 33
+        ? await Permission.storage.request()
+        : PermissionStatus.granted;
+
+    if (storageStatus == PermissionStatus.granted) {
+      print("granted");
+    }
+    if (storageStatus == PermissionStatus.denied) {
+      print("denied");
+    }
+    if (storageStatus == PermissionStatus.permanentlyDenied) {
+      openAppSettings();
+    }
+  }
+  void initState() {
+    super.initState();
+    _auth.authStateChanges().listen((event) {
+      setState(() {
+        _user = event;
+      });
+    });
+    // test();
+    // requestPermission();
+  }
   @override
   void dispose() {
     emailController.dispose();
@@ -74,7 +129,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   icon: Icon(
                       passwordVisibilityProvider.obscureText
                       ? Icons.visibility
-                      : Icons.visibility_off)));
+                      : Icons.visibility_off)
+              )
+            );
           }
         );
       }
@@ -122,12 +179,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
               );
-              // ScaffoldMessenger.of(context).showSnackBar(
-              //   SnackBar(
-              //     backgroundColor: Colors.red,
-              //     content: Text(state.error),
-              //   ),
-              // );
             }
           },
           builder: (context, state) {
@@ -151,6 +202,7 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       }
 
+
       return Container(
         margin: const EdgeInsets.only(top: 30),
         padding: const EdgeInsets.symmetric(
@@ -167,6 +219,24 @@ class _LoginScreenState extends State<LoginScreen> {
             passwordInput(),
             forgotPassword(),
             submitButton(),
+            // SizedBox(height: 30),
+            // Divider(
+            //   height: 20, // Customize the height of the divider
+            //   thickness: 2, // Customize the thickness of the divider
+            //   color: Colors.grey, // Customize the color of the divider
+            // ),
+            // SizedBox(height: 30),
+            //   GestureDetector(
+            //     onTap: _handleGoogleSignIn,
+            //
+            //
+            //     child: Image.asset(
+            //       'assets/images/google.png',
+            //       width: 50, // Adjust the width of the image
+            //       height: 50, // Adjust the height of the image
+            //     ),
+            //   )
+
           ],
         ),
       );
@@ -216,5 +286,13 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+  void _handleGoogleSignIn(){
+    try {
+      GoogleAuthProvider _googleAuthProvider = GoogleAuthProvider();
+      _auth.signInWithProvider(_googleAuthProvider);
+    } catch (error) {
+      print(error);
+    }
   }
 }

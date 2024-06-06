@@ -6,7 +6,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutribaby_app/core/helper/helper_functions.dart';
 import 'package:nutribaby_app/core/routes/routes.dart';
 import 'package:nutribaby_app/features/authentication/presentation/cubit/auth_cubit.dart';
+import 'package:nutribaby_app/features/authentication/presentation/widgets/custom_button.dart';
+import 'package:nutribaby_app/features/home/presentation/cubit/health_cubit.dart';
 import 'package:nutribaby_app/features/home/presentation/widgets/usecase.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/colors.dart';
@@ -15,7 +18,9 @@ import '../../../authentication/presentation/widgets/custom_date_picker.dart';
 import '../../data/health_data_source.dart';
 import '../../domain/health_data_model.dart';
 import '../cubit/health_chart_data_cubit.dart';
+import '../cubit/utils.dart';
 import '../provider/chart_controller.dart';
+import '../screen/loading_screen.dart';
 import 'custon_line_chart.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:intl/intl.dart';
@@ -479,6 +484,49 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                       ),
                     ),
                     SizedBox(height: 10),
+
+
+                             CustomButton(
+                                title: "Export to csv",
+                                onPressed: () async {
+
+                                    context.read<HealthCubit>().exportInitialDataToCsv();
+                                    context.read<HealthChartDataCubit>().exportNewDataToCsv();
+
+                                       // Show dialog indicating successful export
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text("Export Successful"),
+                                            content: Text("Data exported successfully in Download/health_data.csv"),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Text("OK"),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+
+
+
+
+
+
+
+
+                                }
+                            ),
+
+
+
+
+
+
                     //GenerateData
                     // ElevatedButton(
                     //   onPressed: () async {
@@ -521,6 +569,23 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
       ),
     );
   }
+  List<Permission> statuses = [
+    Permission.storage,
+  ];
+  // Future<void> requestPermission() async {
+  //   try {
+  //     for (var element in statuses) {
+  //       if ((await element.status.isDenied ||
+  //           await element.status.isPermanentlyDenied)) {
+  //         await statuses.request();
+  //       }
+  //     }
+  //   } catch (e) {
+  //     // debugPrint('$e');
+  //   } finally {
+  //     await requestPermission();
+  //   }
+  // }
 
   void _showEditDialog(LineData lineData) {
     TextEditingController sideValueController =
@@ -573,7 +638,16 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
       },
     );
   }
-
+  Future<bool> requestPermissions() async {
+    PermissionStatus status = await Permission.storage.request();
+    if (status.isGranted) {
+      return true;
+    } else if (status.isPermanentlyDenied) {
+      openAppSettings();
+      return false;
+    }
+    return false;
+  }
   void _showDeleteDialog(LineData lineData) {
     showDialog(
       context: context,

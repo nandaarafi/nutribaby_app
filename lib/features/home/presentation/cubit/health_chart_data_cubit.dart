@@ -1,10 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:nutribaby_app/features/home/presentation/cubit/health_cubit.dart';
+import 'package:nutribaby_app/features/home/presentation/cubit/utils.dart';
 
 import '../../data/health_data_source.dart';
 import '../../domain/health_data_model.dart';
 
 part 'health_chart_data_state.dart';
+
 
 class HealthChartDataCubit extends Cubit<HealthChartDataState> {
   HealthChartDataCubit() : super(HealthChartDataInitial());
@@ -17,11 +20,7 @@ class HealthChartDataCubit extends Cubit<HealthChartDataState> {
       emit(HealthNewLoading());
       Map<String, List<List<dynamic>>> healthData =
       await HealthService().fetchNewHealthData(startDate: startDate, endDate: endDate);
-      // List<List<dynamic>>? specificData = healthData['your_key_here'];
-      // if (specificData == null || specificData.isEmpty) {
-      //   emit(HealthNewFailed('No health data found for the specified date range'));
-      //   return; // Exit early from the method
-      // } else {
+
         List<LineData> weightDataList = HealthService().convertDataToList(healthData, 'weight');
         List<LineData> heightDataList = HealthService().convertDataToList(healthData, 'height');
         List<LineData> headCircumferenceDataList = HealthService().convertDataToList(healthData, 'headCircumference');
@@ -39,5 +38,26 @@ class HealthChartDataCubit extends Cubit<HealthChartDataState> {
       emit(HealthNewFailed(e.toString()));
     }
   }
+  void exportNewDataToCsv() {
+    if (state is HealthNewSuccess) {
+      final currentState = state as HealthNewSuccess;
+
+      List<LineData> weightDataList = currentState.health['weight'] ?? [];
+      List<LineData> heightDataList = currentState.health['height'] ?? [];
+      List<LineData> headCircumferenceDataList = currentState.health['headCircumference'] ?? [];
+
+      Map<String, List<LineData>> healthData = {
+        'weight': weightDataList,
+        'height': heightDataList,
+        'headCircumference': headCircumferenceDataList,
+      };
+
+      saveToCsv(healthData);
+    }
+  }
+
+
+
+
 }
 
