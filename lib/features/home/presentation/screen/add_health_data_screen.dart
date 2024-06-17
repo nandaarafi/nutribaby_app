@@ -272,8 +272,7 @@ class _AddHealthScreenState extends State<AddHealthScreen> {
             }
           },
           style: ElevatedButton.styleFrom(
-            shape: CircleBorder(),
-            primary: NColors.primary, // Use primary color as background color
+            shape: CircleBorder(), backgroundColor: NColors.primary, // Use primary color as background color
           ),
           child: Icon(Icons.arrow_right, color: Colors.white), // Use standard Icons.arrow_right
         ),

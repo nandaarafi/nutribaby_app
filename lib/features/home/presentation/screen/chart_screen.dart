@@ -50,7 +50,7 @@ class _ChartScreenState extends State<ChartScreen> {
                 onTap: (selectedTabIndex) {
                 },
                 tabAlignment: TabAlignment.center,
-                labelStyle: Theme.of(context).textTheme.subtitle1,
+                labelStyle: Theme.of(context).textTheme.titleMedium,
                 isScrollable: true,
                 indicatorColor: Colors.blueAccent,
                 unselectedLabelColor: Color(0xff503F95),
