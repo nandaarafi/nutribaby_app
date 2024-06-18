@@ -81,9 +81,9 @@ class _AddHealthScreenState extends State<AddHealthScreen> {
       ),
       child: Column(
         children: [
-          parentNameInput(),
-          babyNameInput(),
-          emailInput(),
+          beratInput(),
+          tinggiInput(),
+          linkarKepalaInput(),
           dateInput(),
           saveButton(),
           SizedBox(height: 30),
@@ -94,7 +94,7 @@ class _AddHealthScreenState extends State<AddHealthScreen> {
     );
   }
 
-  Widget parentNameInput() {
+  Widget beratInput() {
     return CustomTextFormFieldSuffix(
       title: 'Berat',
       hintText: '',
@@ -104,7 +104,7 @@ class _AddHealthScreenState extends State<AddHealthScreen> {
     );
   }
 
-  Widget babyNameInput() {
+  Widget tinggiInput() {
     return CustomTextFormFieldSuffix(
       title: 'Tinggi',
       hintText: '',
@@ -114,7 +114,7 @@ class _AddHealthScreenState extends State<AddHealthScreen> {
     );
   }
 
-  Widget emailInput() {
+  Widget linkarKepalaInput() {
     return CustomTextFormFieldSuffix(
       title: 'Lingkar Kepala',
       hintText: '',

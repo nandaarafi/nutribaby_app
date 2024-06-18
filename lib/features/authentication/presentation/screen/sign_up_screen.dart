@@ -148,7 +148,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           title: 'Lingkar Kepala',
           hintText: 'Masukan Lingkar Kepala',
           controller: lingkarKepalaController,
-          suffixText: 'mm',
+          suffixText: 'cm',
           widthSuffix: NHelperFunctions.screenWidth(context) * 0.7,
         );
       }

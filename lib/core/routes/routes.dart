@@ -15,7 +15,6 @@ import '../../features/authentication/presentation/screen/sign_up_screen.dart';
 import '../../features/home/presentation/screen/add_health_data_screen.dart';
 import '../errors/routes_error.dart';
 import 'constants.dart';
-import 'cubit/navigation_cubit.dart';
 import 'home_nav_bar_screen.dart';
 
 class AppRouter {

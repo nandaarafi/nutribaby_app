@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:csv/csv.dart';
+import 'package:intl/intl.dart';
 import 'package:nutribaby_app/features/authentication/model/user_data_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
@@ -49,7 +50,7 @@ class UserDataService {
     User? user = FirebaseAuth.instance.currentUser;
     List<List<String>> csvData = [
       // Header row
-      ["Email", "Tinggi", "Berat", "Lingkar Kepala", "Datetime"]
+      ["Email", "Nama Bayi", "Nama Orang Tua","Tinggi", "Berat", "Lingkar Kepala", "Datetime"]
     ];
 
     if (user != null) {
@@ -61,6 +62,8 @@ class UserDataService {
         for (var userDoc in userSnapshot.docs) {
           var data = userDoc.data() as Map<String, dynamic>;
           String userEmail = data['email'];
+          String userBabyName = data['babyName'];
+          String userParentName = data['parentName'];
 
           CollectionReference healthDataRef = userDoc.reference.collection('health');
           QuerySnapshot healthDataSnapshot = await healthDataRef.get();
@@ -73,9 +76,11 @@ class UserDataService {
             String berat = healthData['weight'] != null ? healthData['weight'].toString() : '';
             String lingkarKepala = healthData['headCircumference'] != null ? healthData['headCircumference'].toString() : '';
             // Replace 'lingkar_kepala' with the actual field name
-            String datetime = healthData['dateTime']?.toString() ?? ''; // Replace 'datetime' with the actual field name
+            DateTime dateTime = healthData['dateTime'] != null ? (healthData['dateTime'] as Timestamp).toDate() : DateTime.now();
 
-            csvData.add([userEmail, tinggi, berat, lingkarKepala, datetime]);
+            // DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
+            String formattedDate = DateFormat('dd-MM-yyyy HH:mm:ss').format(dateTime);
+            csvData.add([userEmail, userBabyName, userParentName, tinggi, berat, lingkarKepala, dateTime.toString()]);
           }
         }
         String csv = const ListToCsvConverter().convert(csvData);
@@ -91,7 +96,7 @@ class UserDataService {
   Future<String> getUserDataAsCSV(String userId) async {
     List<List<String>> csvData = [
       // Header row
-      ["Email", "Tinggi", "Berat", "Lingkar Kepala", "Datetime"]
+      ["Email", "Nama Bayi", "Nama Orang Tua","Tinggi", "Berat", "Lingkar Kepala", "Datetime"]
     ];
 
     // Fetch user document by ID
@@ -100,6 +105,8 @@ class UserDataService {
     if (userDoc.exists) {
       var userData = userDoc.data() as Map<String, dynamic>;
       String userEmail = userData['email'];
+      String userBabyName = userData['babyName'];
+      String userParentName = userData['parentName'];
 
       CollectionReference healthDataRef = userDoc.reference.collection('health');
       QuerySnapshot healthDataSnapshot = await healthDataRef.get();
@@ -111,10 +118,12 @@ class UserDataService {
         String tinggi = healthData['height'] != null ? healthData['height'].toString() : '';
         String berat = healthData['weight'] != null ? healthData['weight'].toString() : '';
         String lingkarKepala = healthData['headCircumference'] != null ? healthData['headCircumference'].toString() : '';
-// Replace 'lingkar_kepala' with the actual field name
-        String datetime = healthData['dateTime']?.toString() ?? ''; // Replace 'datetime' with the actual field name
+        int timestamp = healthData['dateTime'] ?? 0;
 
-        csvData.add([userEmail, tinggi, berat, lingkarKepala, datetime]);
+        DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
+        String formattedDate = DateFormat('dd-MM-yyyy HH:mm:ss').format(dateTime);
+        // print(formattedDate); // Outputs the formatted date
+        csvData.add([userEmail, userBabyName, userParentName,  tinggi, berat, lingkarKepala, formattedDate]);
       }
 
       String csv = const ListToCsvConverter().convert(csvData);

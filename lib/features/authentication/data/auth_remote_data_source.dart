@@ -63,14 +63,6 @@ class AuthService {
   }
 
 
-  Future<bool> signOutFromGoogle() async {
-    try {
-      await FirebaseAuth.instance.signOut();
-      return true;
-    } on Exception catch (_) {
-      return false;
-    }
-  }
   Future<void> signOut() async {
     try {
       await _auth.signOut();

@@ -54,7 +54,7 @@ class HealthService {
 
 
 
-  Future<void> updateHealthData(String labelData, LineData lineData) async{
+  Future<void> editHealthData(String labelData, LineData lineData) async{
     try{
       var collection = FirebaseFirestore.instance
           .collection('users')
@@ -278,6 +278,7 @@ class HealthService {
 
 
 
+
   // Future<List<DocumentSnapshot>> fetchDataForDay(DateTime selectedDay) async {
   //   final CollectionReference collection = FirebaseFirestore.instance
   //       .collection('your_collection');
@@ -352,37 +353,40 @@ class HealthService {
 
 //TODO: Genereated Data
 
-  Future<void> generateRawData({
-    required DateTime startDate,
-    required DateTime endDate,
-  }) async {
+  Future<void> generateRawData(
+    // required DateTime startDate,
+    // required DateTime endDate,
+  ) async {
     try {
+      DateTime startDate = DateTime.now();
+      DateTime endDate =  DateTime(startDate.year, startDate.month, startDate.day - 7);
+
       // Add your logic to get the current user ID
       String userId = _auth.currentUser!.uid;
 
       // Initialize initial values
-      double initialWeight = 50.0;
-      double initialHeight = 160.0;
-      double initialHeadCircumference = 55.0;
+      // double initialWeight = 50.0;
+      // double initialHeight = 160.0;
+      // double initialHeadCircumference = 55.0;
 
       // Calculate the number of days between start and end dates
       int numberOfDays = endDate.difference(startDate).inDays;
 
       // Generate data for the specified time range
-      for (int i = 0; i <= numberOfDays; i++) {
-        double weight = initialWeight + (i * 0.2);
-        double height = initialHeight + (i * 0.2);
-        double headCircumference = initialHeadCircumference + (i * 0.2);
-        DateTime dateTime = startDate.add(Duration(days: i));
+      for (double i = 0.0; i <= 1.4 ; i+=0.2) {
+        double weight =  i;
+        double height = i;
+        double headCircumference = i;
+        DateTime dateTime = startDate.add(Duration(days: (i * 10).toInt()));
 
         // Add a delay of 100 milliseconds
         await Future.delayed(Duration(milliseconds: 100));
 
         // Add data to Firestore
         await _healthReference.doc(userId).collection('health').add({
-          'weight': weight,
-          'height': height,
-          'headCircumference': headCircumference,
+          'weight': double.parse(weight.toStringAsFixed(2)),
+          'height': double.parse(height.toStringAsFixed(2)),
+          'headCircumference': double.parse(headCircumference.toStringAsFixed(2)),
           'dateTime': dateTime,
         });
       }

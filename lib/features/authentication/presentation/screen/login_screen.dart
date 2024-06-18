@@ -242,27 +242,7 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     }
 
-    Widget signUpButton() {
-      return GestureDetector(
-        onTap: () {
-        AppRouter.router.go(Routes.signUpNamedPage);
-        },
-        child: Container(
-          alignment: Alignment.center,
-          margin: const EdgeInsets.only(
-            top: 50,
-            bottom: 73,
-          ),
-          child: Text(
-            'Don\'t have an account? Sign Up',
-            style: TextStyle(
-              color: Colors.grey,
-              decoration: TextDecoration.underline,
-            ),
-          ),
-        ),
-      );
-    }
+
 
     return PopScope(
       canPop: false,

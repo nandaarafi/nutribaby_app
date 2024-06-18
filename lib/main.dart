@@ -33,9 +33,7 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-
   const MyApp({super.key});
-
 
   @override
   Widget build(BuildContext context) {
@@ -55,11 +53,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       themeMode: ThemeMode.system,
-      // theme: ThemeData(
-      //   primaryColor: Colors.white,
-      // ),
       theme: NTheme.lightTheme,
-      // home: SyncChart()
       routerConfig: AppRouter.router,
     ),
     );
