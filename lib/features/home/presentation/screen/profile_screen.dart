@@ -17,93 +17,95 @@ class ProfilScreen extends StatelessWidget{
       canPop: false,
       child: Scaffold(
         appBar: AppBarDefault(title: "Profile",),
-        body: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: BlocBuilder<AuthCubit, AuthState>(
-  builder: (context, state) {
-    if (state is AuthSuccess){
-      final UserModel user = state.user;
-      return Column(
-        children: [
-          // SizedBox(height: 50),
-          CustomContainerBorder(
-            title: "Email",
-            subtitle: user.email,
-          ),
-          CustomContainerBorder(
-            title: "Nama Bayi",
-            subtitle: user.babyName,
-          ),
-          CustomContainerBorder(
-            title: "Nama Orang Tua",
-            subtitle: user.parentName,
-          ),
-          CustomContainerBorder(
-            title: "Jenis Kelamin Bayi",
-            subtitle: user.gender,
-          ),
-          CustomContainerBorder(
-            title: "Umur",
-            subtitle: agregateBirthdate(user.birthdate),
-          ),
-          CustomButton(
-            title: "Logout",
-            onPressed: () async {
-              try {
-                // Attempt to sign out asynchronously
-                await HealthService().signOut();
-                // If sign-out succeeds, navigate to sign-in page
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text('Succes'),
-                    content: Text('Berhasil Logout'),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          AppRouter.router.go(Routes.signInNamedPage);
-                        },
-                        child: Text('OK'),
-                      ),
-                    ],
-                  ),
-                );
-
-              } catch (e) {
-                // Handle sign-out error
-                print('Sign-out failed: $e');
-                // Show a snackbar, dialog, or error message to the user
-                // For example, display an error dialog
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text('Sign-out Error'),
-                    content: Text('Failed to sign out. Please try again.'),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          AppRouter.router.pop();
-                        },
-                        child: Text('OK'),
-                      ),
-                    ],
-                  ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: BlocBuilder<AuthCubit, AuthState>(
+            builder: (context, state) {
+              if (state is AuthSuccess){
+                final UserModel user = state.user;
+                return Column(
+          children: [
+            // SizedBox(height: 50),
+            CustomContainerBorder(
+              title: "Email",
+              subtitle: user.email,
+            ),
+            CustomContainerBorder(
+              title: "Nama Bayi",
+              subtitle: user.babyName,
+            ),
+            CustomContainerBorder(
+              title: "Nama Orang Tua",
+              subtitle: user.parentName,
+            ),
+            CustomContainerBorder(
+              title: "Jenis Kelamin Bayi",
+              subtitle: user.gender,
+            ),
+            CustomContainerBorder(
+              title: "Umur",
+              subtitle: agregateBirthdate(user.birthdate),
+            ),
+            CustomButton(
+              title: "Logout",
+              onPressed: () async {
+                try {
+                  // Attempt to sign out asynchronously
+                  await HealthService().signOut();
+                  // If sign-out succeeds, navigate to sign-in page
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text('Succes'),
+                      content: Text('Berhasil Logout'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            AppRouter.router.go(Routes.signInNamedPage);
+                          },
+                          child: Text('OK'),
+                        ),
+                      ],
+                    ),
+                  );
+          
+                } catch (e) {
+                  // Handle sign-out error
+                  print('Sign-out failed: $e');
+                  // Show a snackbar, dialog, or error message to the user
+                  // For example, display an error dialog
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text('Sign-out Error'),
+                      content: Text('Failed to sign out. Please try again.'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            AppRouter.router.pop();
+                          },
+                          child: Text('OK'),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+              },
+            ),
+          ],
                 );
               }
+              else if (state is AuthLoading){
+                return Center(child: CircularProgressIndicator());
+              }
+              else {
+                return Container();
+              }
+          
             },
           ),
-        ],
-      );
-    }
-    else if (state is AuthLoading){
-      return Center(child: CircularProgressIndicator());
-    }
-    else {
-      return Container();
-    }
-
-  },
-),
+          ),
         ),
       ),
     );

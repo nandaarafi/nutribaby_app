@@ -19,6 +19,7 @@ import '../../../home/presentation/cubit/health_realtime_cubit.dart';
 
 import '../cubit/auth_cubit.dart';
 import '../provider/date_picker.dart';
+import '../provider/password_vis_provider.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_date_picker.dart';
 import '../widgets/custom_text_form_fields.dart';
@@ -229,13 +230,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
       }
 
       Widget passwordInput() {
-        return CustomTextFormField(
+        return Consumer<PasswordVisibilityProvider>(
+          builder: (context, provider, child) {
+          return CustomTextFormField(
           title: 'Password',
           hintText: 'password',
-          obsecureText: true,
+          obsecureText: provider.obscureText,
           controller: passwordController,
-          icon: Icon(Icons.password),
+          icon: IconButton(
+              onPressed: () {
+                provider.toggleObscureText();
+              },
+              icon: Icon(
+                  provider.obscureText
+                      ? Icons.visibility
+                      : Icons.visibility_off)
+          )
         );
+  },
+);
       }
 
 

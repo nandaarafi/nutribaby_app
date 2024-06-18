@@ -509,14 +509,6 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                                           );
                                         },
                                       );
-
-
-
-
-
-
-
-
                                 }
                             ),
 
@@ -526,36 +518,36 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
 
 
                     //GenerateData
-                    ElevatedButton(
-                      onPressed: () async {
-                        try {
-                          await HealthService().generateRawData(
-                            // startDate: DateTime(2023, 10, 26),
-                            // endDate: DateTime(2023, 12, 31),
-                          );
-                          // Optionally, you can notify the user that the data has been generated
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: Text("Success"),
-                              content: Text("Generate your data success"),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text("OK"),
-                                ),
-                              ],
-                            ),
-                          );
-                        } catch (e) {
-                          // Handle errors
-                          print('Error generating raw data: $e');
-                        }
-                      },
-                      child: Text('Generate Raw Data'),
-                    ),
+                    // ElevatedButton(
+                    //   onPressed: () async {
+                    //     try {
+                    //       await HealthService().generateRawData(
+                    //         // startDate: DateTime(2023, 10, 26),
+                    //         // endDate: DateTime(2023, 12, 31),
+                    //       );
+                    //       // Optionally, you can notify the user that the data has been generated
+                    //       showDialog(
+                    //         context: context,
+                    //         builder: (context) => AlertDialog(
+                    //           title: Text("Success"),
+                    //           content: Text("Generate your data success"),
+                    //           actions: [
+                    //             TextButton(
+                    //               onPressed: () {
+                    //                 Navigator.pop(context);
+                    //               },
+                    //               child: Text("OK"),
+                    //             ),
+                    //           ],
+                    //         ),
+                    //       );
+                    //     } catch (e) {
+                    //       // Handle errors
+                    //       print('Error generating raw data: $e');
+                    //     }
+                    //   },
+                    //   child: Text('Generate Raw Data'),
+                    // ),
                   ],
                 ),
               ),
