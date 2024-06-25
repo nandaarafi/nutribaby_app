@@ -8,7 +8,6 @@ import 'package:nutribaby_app/core/routes/routes.dart';
 import 'package:nutribaby_app/features/authentication/presentation/widgets/custom_button.dart';
 import 'package:nutribaby_app/features/home/presentation/cubit/health_cubit.dart';
 import 'package:nutribaby_app/features/home/presentation/data/data_tables.dart';
-import 'package:nutribaby_app/features/home/presentation/widgets/custom_line_chart_extended.dart';
 import 'package:nutribaby_app/features/home/presentation/widgets/usecase.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -25,23 +24,15 @@ import 'custon_line_chart.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:intl/intl.dart';
 
-class FCategoryTab extends StatefulWidget {
+class FCategoryTabHead extends StatefulWidget {
   final List<LineData> dataList;
-  final List<LineData> expectedList2;
-  final List<LineData> expectedList3;
-  final List<LineData> expectedMinus2;
-  final List<LineData> expectedMinus3;
   final String unit;
   final String labelTable;
   final String? restorationId;
   final String labelUpdateTable;
 
-  FCategoryTab({
+  FCategoryTabHead({
     required this.dataList,
-    required this.expectedList2,
-    required this.expectedList3,
-    required this.expectedMinus2,
-    required this.expectedMinus3,
     required this.unit,
     required this.labelUpdateTable,
     required this.labelTable,
@@ -52,7 +43,7 @@ class FCategoryTab extends StatefulWidget {
   _FCategoryTabState createState() => _FCategoryTabState();
 }
 
-class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
+class _FCategoryTabState extends State<FCategoryTabHead> /*with RestorationMixin*/ {
   List<double> testData = [2781, 2667, 2785, 1031, 646, 2340, 2410];
 
   @override
@@ -75,7 +66,7 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
         ? DateFormat('dd MMM, yyyy').format(_startDate!)
         : '';
     String formattedEndDate =
-        _endDate != null ? DateFormat('dd MMM, yyyy').format(_endDate!) : '';
+    _endDate != null ? DateFormat('dd MMM, yyyy').format(_endDate!) : '';
 
     _dateController.text = "$formattedStartDate - $formattedEndDate";
     AppRouter.router.pop();
@@ -88,13 +79,13 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
         _startDate = args.value.startDate;
         _endDate = args.value.endDate ?? args.value.startDate;
         String formattedStartDate =
-            DateFormat('dd MMM, yyyy').format(args.value.startDate);
+        DateFormat('dd MMM, yyyy').format(args.value.startDate);
         String formattedEndDate = args.value.endDate != null
             ? DateFormat('dd MMM, yyyy').format(args.value.endDate!)
             : '';
         _dateController.text = "$formattedStartDate - $formattedEndDate";
         _range = '${DateFormat('dd/MM/yyyy').format(args.value.startDate)} -'
-            // ignore: lines_longer_than_80_chars
+        // ignore: lines_longer_than_80_chars
             ' ${DateFormat('dd/MM/yyyy').format(args.value.endDate ?? args.value.startDate)}';
         // _range = _dateController.text;
       } else if (args.value is DateTime) {
@@ -162,10 +153,10 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                                       children: [
                                         SfDateRangePicker(
                                           onSelectionChanged:
-                                              _onSelectionChanged,
+                                          _onSelectionChanged,
                                           selectionMode:
-                                              DateRangePickerSelectionMode
-                                                  .range,
+                                          DateRangePickerSelectionMode
+                                              .range,
                                           selectionColor: Colors.black,
                                           minDate: DateTime.now()
                                               .subtract(Duration(days: 365)),
@@ -173,7 +164,7 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                                         ),
                                         TextButton(
                                           onPressed:
-                                              _applyDateRangeAndCloseModal,
+                                          _applyDateRangeAndCloseModal,
                                           child: Text('OK'),
                                         ),
                                       ],
@@ -263,22 +254,18 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                   height: NHelperFunctions.screenHeight(context) * 0.23,
                   width: double.infinity,
                   child: provider.LoadingState
-                      ? CustomLineChartExtended(
-                          dataList: widget.dataList,
-                          expectedList2: widget.expectedList2,
-                          expectedList3: widget.expectedList3,
-                          expectedListMinus2: widget.expectedMinus2,
-                          expectedListMinus3: widget.expectedMinus3,
-                          xViewInterval: "",
-                          // selectedValue: provider.selectedValue,
-                        )
+                      ? CustomLineChart(
+                    dataList: widget.dataList,
+                    xViewInterval: "",
+                    // selectedValue: provider.selectedValue,
+                  )
                       : Center(
-                          child: Container(
-                            height: 50,
-                            width: 50,
-                            child: CircularProgressIndicator(),
-                          ),
-                        ),
+                    child: Container(
+                      height: 50,
+                      width: 50,
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
                 ),
               ),
               SizedBox(height: 10),
@@ -304,12 +291,12 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             color: Color(0xff503F95)
-                            // color: Colors.white
-                            ),
+                          // color: Colors.white
+                        ),
                         child: Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal:
-                                  NHelperFunctions.screenWidth(context) * 0.09),
+                              NHelperFunctions.screenWidth(context) * 0.09),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -327,8 +314,8 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                                   children: [
                                     Text(
                                       widget.dataList.isNotEmpty
-                                          ? (widget.dataList.length)
-                                              .toString()
+                                          ? (widget.dataList.length - 1)
+                                          .toString()
                                           : '0',
                                       style: TextStyle(
                                         color: Colors.white,
@@ -350,9 +337,9 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                                   Consumer<ChartDataProvider>(
                                     builder: (context, provider, _) {
                                       List<LineData> dataList =
-                                          provider.fetchInitial
-                                              ? widget.dataList
-                                              : dataListReversed;
+                                      provider.fetchInitial
+                                          ? widget.dataList
+                                          : dataListReversed;
                                       return RichText(
                                         text: TextSpan(
                                             style: DefaultTextStyle.of(context)
@@ -361,8 +348,8 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                                               TextSpan(
                                                 text: dataList.isNotEmpty
                                                     ? dataList[0]
-                                                        .sideValue
-                                                        .toString()
+                                                    .sideValue
+                                                    .toString()
                                                     : '0',
                                                 style: TextStyle(
                                                     fontFamily: 'Poppins',
@@ -399,7 +386,7 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                                             overflow: TextOverflow
                                                 .ellipsis, // Display '...' when text overflows
                                             maxLines:
-                                                1); // Limit to one line                                        );
+                                            1); // Limit to one line                                        );
                                       } else {
                                         return Text("Error");
                                       }
@@ -465,31 +452,31 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                             // rows: provider.fetchInitial ? dataListReversed
                             rows: dataList
                                 .map((lineData) => DataRow(
-                                      cells: [
-                                        DataCell(Text(
-                                            '${lineData.sideValue.toString()} ${widget.unit}')),
-                                        DataCell(Text(DateFormat('dd-MM-yyyy')
-                                            .format(lineData.date))),
-                                        DataCell(
-                                          Row(
-                                            children: [
-                                              IconButton(
-                                                icon: Icon(Icons.edit),
-                                                onPressed: () {
-                                                  _showEditDialog(lineData);
-                                                },
-                                              ),
-                                              IconButton(
-                                                icon: Icon(Icons.delete),
-                                                onPressed: () async {
-                                                  _showDeleteDialog(lineData);
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ))
+                              cells: [
+                                DataCell(Text(
+                                    '${lineData.sideValue.toString()} ${widget.unit}')),
+                                DataCell(Text(DateFormat('dd-MM-yyyy')
+                                    .format(lineData.date))),
+                                DataCell(
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(Icons.edit),
+                                        onPressed: () {
+                                          _showEditDialog(lineData);
+                                        },
+                                      ),
+                                      IconButton(
+                                        icon: Icon(Icons.delete),
+                                        onPressed: () async {
+                                          _showDeleteDialog(lineData);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ))
                                 .toList(),
                           );
                         },
@@ -498,33 +485,33 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                     SizedBox(height: 10),
 
 
-                             CustomButton(
-                                title: "Export to csv",
-                                onPressed: () async {
+                    CustomButton(
+                        title: "Export to csv",
+                        onPressed: () async {
 
-                                    context.read<HealthCubit>().exportInitialDataToCsv();
-                                    context.read<HealthChartDataCubit>().exportNewDataToCsv();
+                          context.read<HealthCubit>().exportInitialDataToCsv();
+                          context.read<HealthChartDataCubit>().exportNewDataToCsv();
 
-                                       // Show dialog indicating successful export
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: Text("Export Successful"),
-                                            content: Text("Data exported successfully in Download/user/health_data.csv"),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: Text("OK"),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                }
-                            ),
+                          // Show dialog indicating successful export
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text("Export Successful"),
+                                content: Text("Data exported successfully in Download/user/health_data.csv"),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text("OK"),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
+                    ),
 
 
 
@@ -610,7 +597,7 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
 
   void _showEditDialog(LineData lineData) {
     TextEditingController sideValueController =
-        TextEditingController(text: lineData.sideValue.toString());
+    TextEditingController(text: lineData.sideValue.toString());
 
     showDialog(
       context: context,

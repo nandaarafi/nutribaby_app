@@ -6,6 +6,7 @@ class NTheme {
 
   static ThemeData lightTheme = ThemeData(
     dialogTheme: DialogTheme(backgroundColor: Colors.white),
+    canvasColor: Colors.white,
     useMaterial3: true,
     fontFamily: 'Poppins',
     brightness: Brightness.light,

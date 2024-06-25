@@ -8,17 +8,17 @@ import 'package:nutribaby_app/features/home/presentation/provider/chart_controll
 import 'package:provider/provider.dart';
 import '../../domain/health_data_model.dart';
 
-class CustomLineChart2 extends StatefulWidget {
+class CustomLineChart extends StatefulWidget {
   final List<LineData> dataList;
   final String xViewInterval;
 
-  CustomLineChart2({Key? key, required this.dataList, required this.xViewInterval}) : super(key: key);
+  CustomLineChart({Key? key, required this.dataList, required this.xViewInterval}) : super(key: key);
 
   @override
-  State<CustomLineChart2> createState() => _CustomLineChart2State();
+  State<CustomLineChart> createState() => _CustomLineChartState();
 }
 
-class _CustomLineChart2State extends State<CustomLineChart2> {
+class _CustomLineChartState extends State<CustomLineChart> {
   @override
   Widget build(BuildContext context) {
      List<LineData> dataListReversed = widget.dataList.reversed.toList();
@@ -66,12 +66,9 @@ class LineChartSample2 extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
 
     double yAxisInterval = calculateYAxisInterval(adjustedMaxY, screenHeight);
-    // return Consumer<ChartDataProvider>(
-    //     builder: (context, provider, _) {
       return ListView.builder(
         scrollDirection: Axis.horizontal,
         reverse: true,
-        // reverse: provider.fetchInitial ? true : false,
         itemCount: 1,
         itemBuilder: (context, index) {
           List<FlSpot> spots = [];
@@ -90,8 +87,7 @@ class LineChartSample2 extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 30.0),
               child: AspectRatio(
                 aspectRatio: 16 / 9,
-                child: LineChart(mainData(
-                    spots, yAxisInterval, adjustedMaxY, timeIntervalState)),
+                child: LineChart(mainData(spots, yAxisInterval, adjustedMaxY, timeIntervalState)),
               ),
             ),
           );
@@ -101,18 +97,6 @@ class LineChartSample2 extends StatelessWidget {
     // );
   }
 
-  List<Widget> _buildLeftTitles(double yAxisInterval, double adjustedMaxY, int maxSideValue) {
-    List<Widget> titles = [];
-    for (int i = maxSideValue; i <= adjustedMaxY; i -= yAxisInterval.toInt()) {
-      titles.add(
-        Text(
-          i.toString(),
-          textAlign: TextAlign.right,
-        ),
-      );
-    }
-    return titles;
-  }
   LineChartData mainData(List<FlSpot> spots, double yAxisInterval, double adjustedMaxY, bool timeIntervalState) {
 
     return LineChartData(
@@ -224,28 +208,16 @@ class LineChartSample2 extends StatelessWidget {
             colors: gradientColors,
           ),
           color: Colors.white,
-          barWidth: 5,
+          barWidth: 1,
           isStrokeCapRound: true,
           dotData: const FlDotData(
             show: false,
           ),
-          belowBarData: BarAreaData(
-            show: true,
-            gradient: LinearGradient(
-              colors: [NColors.Pprimary, Color(0xffffffff)],
-              stops: [0.1, 0.9],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-
-
-            // gradient: LinearGradient(
-            //   colors: gradientColors
-            //       .map((color) => color.withOpacity(0.3))
-            //       .toList(),
-            // ),
-          ),
         ),
+
+
+
+
       ],
     );
   }

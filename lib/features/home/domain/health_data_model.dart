@@ -37,13 +37,13 @@ class TrendModel extends Equatable {
 }
 
 class LineData {
-  String documentId;
+  String? documentId;
   double sideValue;
   DateTime date;
 
 
   LineData({
-      required this.documentId,
+      this.documentId,
       required this.sideValue,
       required this.date
   });
