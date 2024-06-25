@@ -521,10 +521,11 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                     // ElevatedButton(
                     //   onPressed: () async {
                     //     try {
-                    //       await HealthService().generateRawData(
+                    //       await HealthService().deleteDocumentsByDateRange();
+                    //       // await HealthService().generateRawData(
                     //         // startDate: DateTime(2023, 10, 26),
                     //         // endDate: DateTime(2023, 12, 31),
-                    //       );
+                    //       // );
                     //       // Optionally, you can notify the user that the data has been generated
                     //       showDialog(
                     //         context: context,

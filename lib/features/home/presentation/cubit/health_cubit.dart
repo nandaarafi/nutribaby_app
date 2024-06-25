@@ -78,6 +78,7 @@ class HealthCubit extends Cubit<HealthState> {
       List<LineData> weightDataList = currentState.health['weight'] ?? [];
       List<LineData> heightDataList = currentState.health['height'] ?? [];
       List<LineData> headCircumferenceDataList = currentState.health['headCircumference'] ?? [];
+      List<LineData> dateTimeList = currentState.health['headCircumference'] ?? [];
 
       Map<String, List<LineData>> healthData = {
         'weight': weightDataList,

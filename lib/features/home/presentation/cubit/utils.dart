@@ -14,14 +14,14 @@ Future<void> saveToCsv(Map<String, List<LineData>> healthData) async {
   //   return;
   // }
   List<List<dynamic>> rows = [];
-  rows.add(["Date", "Weight", "Height", "Head Circumference"]);
+  rows.add(["Berat", "Tinggi", "Lingkar Kepala", "Datetime"]);
   int dataLength = healthData['weight']?.length ?? 0;
   for (int i = 0; i < dataLength; i++) {
     List<dynamic> row = [];
-    row.add(healthData['weight']?[i].date.toIso8601String() ?? '');
     row.add(healthData['weight']?[i].sideValue ?? '');
     row.add(healthData['height']?[i].sideValue ?? '');
     row.add(healthData['headCircumference']?[i].sideValue ?? '');
+    row.add(healthData['weight']?[i].date.toString() ?? '');
     rows.add(row);
   }
 
@@ -29,7 +29,6 @@ Future<void> saveToCsv(Map<String, List<LineData>> healthData) async {
 
   final directory = Directory('/storage/emulated/0/Download/user');
   if (!await directory.exists()) {
-    // If the directory doesn't exist, create it
     await directory.create(recursive: true);
   }
   final path = '${directory.path}/health_data.csv';

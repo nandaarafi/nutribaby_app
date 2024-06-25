@@ -118,12 +118,10 @@ class UserDataService {
         String tinggi = healthData['height'] != null ? healthData['height'].toString() : '';
         String berat = healthData['weight'] != null ? healthData['weight'].toString() : '';
         String lingkarKepala = healthData['headCircumference'] != null ? healthData['headCircumference'].toString() : '';
-        int timestamp = healthData['dateTime'] ?? 0;
-
-        DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
+        DateTime dateTime = healthData['dateTime'] != null ? (healthData['dateTime'] as Timestamp).toDate() : DateTime.now();
         String formattedDate = DateFormat('dd-MM-yyyy HH:mm:ss').format(dateTime);
         // print(formattedDate); // Outputs the formatted date
-        csvData.add([userEmail, userBabyName, userParentName,  tinggi, berat, lingkarKepala, formattedDate]);
+        csvData.add([userEmail, userBabyName, userParentName,  tinggi, berat, lingkarKepala, dateTime.toString()]);
       }
 
       String csv = const ListToCsvConverter().convert(csvData);

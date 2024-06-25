@@ -394,4 +394,29 @@ class HealthService {
       throw e;
     }
   }
+  //:ERROR can't fixed this
+  Future<void> deleteDocumentsByDateRange() async {
+    // var auth = FirebaseAuth.instance;
+    var collection = FirebaseFirestore.instance
+        .collection('users')
+        .doc("XHvqpqujp2OBiZ6hllcl9FswJqp1")
+        .collection('health');
+
+    DateTime startDate = DateTime(2024, 6, 15); // Replace with your start date
+    DateTime endDate = DateTime(2024, 6, 29);
+    // Convert the DateTime to Timestamps (Firestore format)
+    Timestamp startTimestamp = Timestamp.fromDate(startDate);
+    Timestamp endTimestamp = Timestamp.fromDate(endDate);
+
+    // Query the collection to find documents within the specified date range
+    QuerySnapshot querySnapshot = await collection
+        .where('datetimeField', isGreaterThanOrEqualTo: startTimestamp)
+        .where('datetimeField', isLessThanOrEqualTo: endTimestamp)
+        .get();
+
+    // Loop through the results and delete the document(s)
+    for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+      await doc.reference.delete();
+    }
+  }
 }
