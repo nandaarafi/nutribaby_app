@@ -388,7 +388,6 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                                     builder: (context, state) {
                                       if (state is AuthSuccess) {
                                         final UserModel user = state.user;
-
                                         return Text(
                                             "Age ${agregateBirthdate(user.birthdate)}",
                                             style: TextStyle(
@@ -433,6 +432,7 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                       ),
                     ),
                     SizedBox(height: 10),
+
                     Container(
                       height: NHelperFunctions.screenHeight(context) * 0.3,
                       width: NHelperFunctions.screenWidth(context) * 0.9,
@@ -483,6 +483,7 @@ class _FCategoryTabState extends State<FCategoryTab> /*with RestorationMixin*/ {
                                                 icon: Icon(Icons.delete),
                                                 onPressed: () async {
                                                   _showDeleteDialog(lineData);
+                                                  // refresh
                                                 },
                                               ),
                                             ],

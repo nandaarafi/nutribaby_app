@@ -3,7 +3,7 @@
 A baby nutrition tracker app to monitor and track the nutrition intake of babies.
 
 <div style="text-align:center">
-  <img src="assets/images/login.png" alt="App Logo" style="height:200px; width:200px; object-fit:cover;">
+  <img src="AssetHasil/nutribaby_app_showcase.png" alt="App Logo" style="height:200px; width:200px; object-fit:cover;">
 </div>
 
 ## Technologies Used
